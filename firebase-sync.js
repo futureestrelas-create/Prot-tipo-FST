@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const gate = document.getElementById("authGate");
 const appRoot = document.getElementById("mainApp");
@@ -33,7 +34,7 @@ function showGate(message) {
   status(message);
 }
 
-let app, auth, db, sharedDoc;
+let app, auth, db, storage, sharedDoc;
 try {
   if (!window.FIREBASE_CONFIG) throw new Error("firebase-config.js não carregou.");
   app = initializeApp(window.FIREBASE_CONFIG);
@@ -120,6 +121,30 @@ if (auth && db && sharedDoc) {
     }
   });
 }
+
+// Imagens de cartinhas ficam no Firebase Storage; somente a referência/URL vai para o Firestore.
+window.FST_UPLOAD_PLAYER_IMAGE = async function(file, playerId) {
+  if (!currentUser || !storage) throw new Error("Entre com uma conta autorizada para enviar imagens.");
+  if (!file || file.type !== "image/jpeg") throw new Error("Envie uma imagem JPG/JPEG.");
+  if (file.size > 2 * 1024 * 1024) throw new Error("A imagem deve ter até 2 MB.");
+  const safeName = String(file.name || "cartinha.jpg").replace(/[^a-zA-Z0-9._-]/g, "_").slice(-80);
+  const path = `player-cards/${playerId}_${Date.now()}_${safeName}`;
+  const fileRef = ref(storage, path);
+  try {
+    await uploadBytes(fileRef, file, { contentType: "image/jpeg" });
+    const url = await getDownloadURL(fileRef);
+    return { url, path };
+  } catch (err) {
+    console.error(err);
+    if (err.code === "storage/unauthorized") throw new Error("O Firebase Storage bloqueou o envio. Confira se o Storage está ativado e publique as regras fornecidas.");
+    if (err.code === "storage/bucket-not-found" || err.code === "storage/no-default-bucket") throw new Error("O Firebase Storage ainda não está configurado neste projeto.");
+    throw new Error("Não foi possível enviar a cartinha. Verifique o Firebase Storage e tente novamente.");
+  }
+};
+window.FST_DELETE_PLAYER_IMAGE = async function(path) {
+  if (!currentUser || !storage || !path) return;
+  await deleteObject(ref(storage, path));
+};
 
 window.FST_CLOUD_SAVE = function (data) {
   if (!currentUser || !sharedDoc || applyingCloudData) return;

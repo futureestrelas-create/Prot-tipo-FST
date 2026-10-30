@@ -1,0 +1,21 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /player-cards/{fileName} {
+      function isAllowedUser() {
+        return request.auth != null
+          && request.auth.token.email_verified == true
+          && request.auth.token.email in [
+            'hernandesfifa15ps4@gmail.com',
+            'lucasmitoo4514@gmail.com'
+          ];
+      }
+
+      allow read: if isAllowedUser();
+      allow create, update: if isAllowedUser()
+        && request.resource.size <= 2 * 1024 * 1024
+        && request.resource.contentType == 'image/jpeg';
+      allow delete: if isAllowedUser();
+    }
+  }
+}
