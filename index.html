@@ -91,6 +91,13 @@
  #squadBuilderView .slot-name{font-size:7px}
  #squadBuilderView .slot-select{font-size:7px}
 }
+
+.topbar{gap:18px}
+.topbar-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+.signed-in-email{font-size:11px;color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.logout-btn{white-space:nowrap;border-color:#61202a;background:#211015;color:#ff8a95;padding:10px 14px;font-weight:800}
+.logout-btn:hover{background:#ed1c2e;color:#fff;border-color:#ed1c2e}
+@media(max-width:760px){.topbar{align-items:flex-start;gap:8px}.topbar-actions{gap:6px;flex-wrap:wrap}.signed-in-email{display:none}.logout-btn{padding:8px 10px;font-size:11px}.topbar .season{font-size:10px;padding:7px 9px}}
 </style>
 </head>
 <body>
@@ -107,7 +114,11 @@
 <div class="app" id="mainApp" style="visibility:hidden">
 <header class="topbar">
   <div class="brand"><div class="crest">🐆</div><div>FUTURE STARS <small>FOOTBALL CLUB · MANAGER</small></div></div>
-  <div class="season">TEMPORADA 01 <span style="color:#fff">/</span> 2026</div>
+  <div class="topbar-actions">
+    <span class="signed-in-email" id="signedInEmail" aria-live="polite"></span>
+    <div class="season">TEMPORADA 01 <span style="color:#fff">/</span> 2026</div>
+    <button class="btn logout-btn" id="logoutBtn" type="button" title="Sair da conta">↪ SAIR</button>
+  </div>
 </header>
 <div class="layout">
 <aside class="sidebar">
