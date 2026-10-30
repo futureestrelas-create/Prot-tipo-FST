@@ -98,12 +98,231 @@
 .logout-btn{white-space:nowrap;border-color:#61202a;background:#211015;color:#ff8a95;padding:10px 14px;font-weight:800}
 .logout-btn:hover{background:#ed1c2e;color:#fff;border-color:#ed1c2e}
 @media(max-width:760px){.topbar{align-items:flex-start;gap:8px}.topbar-actions{gap:6px;flex-wrap:wrap}.signed-in-email{display:none}.logout-btn{padding:8px 10px;font-size:11px}.topbar .season{font-size:10px;padding:7px 9px}}
+
+/* =========================================================
+   FUTURE STARS FC — visual identity refresh
+   UI-only styling: preserves existing app data and behavior.
+   ========================================================= */
+:root{
+ --bg:#07080b;--panel:#0d1015;--panel2:#141820;--line:#282d36;
+ --red:#f01932;--red2:#ff334b;--white:#f5f6f8;--muted:#969eab;
+ --gold:#e8c879;--green:#48d597;
+}
+html{background:#07080b}
+body{
+ background:
+  radial-gradient(ellipse at 82% 0%,rgba(119,10,27,.23),transparent 32%),
+  radial-gradient(ellipse at 0% 70%,rgba(65,10,19,.15),transparent 28%),
+  linear-gradient(145deg,#07080b,#0a0b10 52%,#07080b);
+ color:var(--white);letter-spacing:.005em;
+}
+.app{max-width:none;width:100%;margin:0;min-height:100vh}
+.topbar.fst-topbar{
+ height:94px;min-height:94px;padding:12px 28px;gap:22px;
+ background:
+  radial-gradient(ellipse at 50% 0%,rgba(237,28,46,.17),transparent 38%),
+  linear-gradient(100deg,#08090c 0%,#111116 53%,#08090c 100%);
+ border-bottom:1px solid #4a2029;box-shadow:0 9px 32px #0008;
+ overflow:hidden;
+}
+.fst-topbar:before{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.22;
+ background:repeating-linear-gradient(132deg,transparent 0 64px,rgba(240,25,50,.2) 65px 66px,transparent 67px 105px);
+}
+.fst-topbar:after{
+ content:"FST";position:absolute;left:47%;top:-62px;font-size:150px;line-height:1;
+ font-weight:1000;font-style:italic;letter-spacing:-.1em;color:#fff;opacity:.025;pointer-events:none;
+}
+.fst-brand,.fst-header-center,.fst-account{position:relative;z-index:1}
+.fst-brand{display:flex;align-items:center;gap:14px;min-width:0;letter-spacing:0}
+.fst-crest{
+ width:58px;height:63px;flex:0 0 58px;display:flex;align-items:center;justify-content:center;
+ clip-path:polygon(50% 0,93% 14%,86% 70%,50% 100%,14% 70%,7% 14%);
+ background:linear-gradient(145deg,#fff 0%,#a8abb3 45%,#292c34 100%);
+ color:#08090c;font-size:14px;position:relative;box-shadow:0 0 22px #ed1c2e24;
+}
+.fst-crest:after{content:"";position:absolute;inset:3px;clip-path:polygon(50% 0,93% 14%,86% 70%,50% 100%,14% 70%,7% 14%);border:2px solid var(--red)}
+.fst-crest span{font-weight:1000;font-style:italic;letter-spacing:-1px}
+.fst-crest b{position:absolute;right:8px;top:8px;font-size:15px;color:var(--red)}
+.fst-wordmark{line-height:1.02;white-space:nowrap}
+.fst-name{font-size:clamp(20px,2.15vw,31px);font-weight:1000;font-style:italic;letter-spacing:-.055em;color:#f8f8fa}
+.fst-name span{color:var(--red)}
+.fst-name em{font-size:.56em;font-style:normal;letter-spacing:.08em;color:#d7d9de;margin-left:5px}
+.fst-wordmark small{display:block;margin-top:8px;font-size:9px;font-weight:900;letter-spacing:.31em;color:#b5bac4}
+.fst-wordmark small i{font-style:normal;color:var(--red);padding:0 3px}
+.fst-header-center{font-size:9px;line-height:1.8;letter-spacing:.27em;color:#8d929d;text-align:center;font-weight:800}
+.fst-header-center strong{color:#f4f4f6}
+.fst-account{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+.signed-in-email{font-size:11px;color:#a7adba;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.season{display:flex;align-items:center;gap:7px;white-space:nowrap;font-size:10px;color:#ffc0c6;border:1px solid #54202a;background:linear-gradient(130deg,#260d13,#120b0f);padding:10px 13px;border-radius:999px;font-weight:900;letter-spacing:.04em}
+.season-dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}
+.season-slash{color:var(--red);font-weight:1000}
+.logout-btn{white-space:nowrap;border-color:#7d1d2a;background:linear-gradient(120deg,#2b0d13,#151015);color:#ff9ba5;padding:11px 15px;font-weight:900;letter-spacing:.06em}
+.logout-btn:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.layout{grid-template-columns:242px minmax(0,1fr);min-height:calc(100vh - 94px)}
+.sidebar{
+ padding:22px 13px 18px;background:linear-gradient(180deg,#0b0c10 0%,#0b0d12 64%,#08090c 100%);
+ border-right:1px solid #292b33;position:relative;overflow:hidden;
+}
+.sidebar:after{content:"FST";position:absolute;bottom:44px;left:12px;font-size:94px;font-weight:1000;font-style:italic;letter-spacing:-.1em;color:#fff;opacity:.018;pointer-events:none}
+.fst-clubcard{position:relative;overflow:hidden;padding:16px 15px 17px;border:1px solid #47212a;border-radius:15px;background:radial-gradient(ellipse at 100% 0%,#46101c 0,transparent 50%),linear-gradient(145deg,#191116,#0f1116 74%);box-shadow:inset 3px 0 0 var(--red),0 12px 26px #0003}
+.fst-clubcard:after{content:"";position:absolute;right:-22px;top:10px;width:100px;height:100px;border:1px solid #ed1c2e20;transform:rotate(35deg);pointer-events:none}
+.clubcard-emblem{float:right;position:relative;z-index:1;width:58px;height:58px;object-fit:contain;border:1px solid #5d6069;border-radius:50%;background:#050506;box-shadow:0 0 18px #ed1c2e20}
+.fst-clubcard .eyebrow{font-size:9px;letter-spacing:.17em;color:#9ba1ad}
+.fst-clubcard strong{font-size:16px;letter-spacing:-.03em;margin:10px 0 6px}
+.fst-clubcard strong b{color:var(--red)}
+.fst-clubcard>span{font-size:10px;line-height:1.7;color:#ff6c7d}
+.clubcard-motto{clear:both;padding-top:12px;margin-top:13px;border-top:1px solid #ffffff12;color:#888f9d;font-size:9px;letter-spacing:.2em;line-height:1.8;font-weight:800}
+.navlabel{font-size:9px;color:#737b89;letter-spacing:.22em;padding:4px 12px 11px}
+.nav{gap:6px}
+.nav button{position:relative;min-height:46px;padding:12px 13px;border-radius:10px;color:#aeb4c0;font-size:12px;letter-spacing:.01em;transition:background .18s,border-color .18s,transform .18s}
+.nav button .ico{width:24px;font-size:17px}
+.nav button.active,.nav button:hover{background:linear-gradient(100deg,#351017,#1a1015 80%);border-color:#63202c;color:#fff;box-shadow:inset 3px 0 0 var(--red),0 5px 16px #0003}
+.nav button.active .ico{color:var(--red2)}
+.nav button:hover{transform:translateX(2px)}
+.sidebar-foot{position:relative;z-index:1;margin-top:28px;padding:14px 10px;border-top:1px solid #282b33;color:#737b88;font-size:10px;letter-spacing:.06em;line-height:1.9}
+main{padding:28px clamp(16px,2.3vw,36px) 36px;min-width:0}
+.hero{border:1px solid #47212a;border-radius:16px;min-height:220px;padding:clamp(22px,3vw,38px);background:radial-gradient(ellipse at 90% 0%,#4a101b60,transparent 43%),linear-gradient(100deg,#0a0b0fef,#151015eF 64%,#0b0c10ef),repeating-linear-gradient(135deg,transparent 0 25px,#ec1c2e 26px 27px);box-shadow:0 20px 48px #0004,inset 0 1px #ffffff09}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 65%,#ed1c2e08)}
+.hero:after{content:"FUTURE STARS";right:10px;bottom:-24px;font-size:clamp(62px,10vw,142px);letter-spacing:-.08em;opacity:1;color:#ffffff04}
+.hero h1{font-style:italic;text-transform:uppercase;font-size:clamp(32px,4vw,56px);letter-spacing:-.055em}
+.hero h1 span{color:var(--red);text-shadow:0 0 25px #ed1c2e24}
+.eyebrow{color:var(--red2);font-size:9px;letter-spacing:.25em}
+.hero p{color:#a5abb6;font-size:13px}
+.btn{border:1px solid #2c313b;background:linear-gradient(135deg,#1a1d24,#12151a);border-radius:9px;transition:transform .18s,border-color .18s,filter .18s}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px);border-color:#6b2933}
+.btn.primary{background:linear-gradient(110deg,#ff263f,#d70f28);border-color:#ff334b;box-shadow:0 7px 24px #ed1c2e30;color:#fff}
+.stats{gap:12px}
+.stat{position:relative;overflow:hidden;border:1px solid #292e38;border-radius:12px;background:linear-gradient(145deg,#151820,#0c0e13);box-shadow:0 8px 24px #0002}
+.stat:after{content:"";position:absolute;right:-28px;top:-28px;width:78px;height:78px;border-radius:50%;border:1px solid #ed1c2e18;pointer-events:none}
+.stat strong{font-style:italic}
+.stat-icon{color:var(--red)}
+.section-head h2,.page-title{font-style:italic;text-transform:uppercase;letter-spacing:-.035em}
+.page-title{font-size:clamp(26px,3vw,36px)}
+.page-subtitle{color:#9aa1ad}
+.panel{border:1px solid #292e37;border-radius:14px;background:linear-gradient(145deg,#11141a,#0c0e12);box-shadow:0 12px 30px #0002}
+.pill{color:#ff9aa5;background:#240d13;border-color:#59202a;border-radius:5px}
+.match,.competition{border-color:#292e38;background:linear-gradient(120deg,#151820,#0f1116);border-radius:10px}
+.badge{background:#242831;color:#dfe1e7}
+.player-card{border-radius:10px;border-color:#6d5b35;background:radial-gradient(ellipse at 50% 0%,#9d7c2b65,transparent 52%),linear-gradient(150deg,#35302a,#111217 56%,#321019);box-shadow:0 10px 25px #0005}
+.player-card:before{background:linear-gradient(135deg,transparent 35%,#ed1c2e18)}
+.player-name{border-bottom-color:#e8c87945}
+.player-position{color:#f0d78c}
+.player-tools input,.player-tools select,.field input,.field select{background:#090b0f;border-color:#303641;border-radius:8px}
+.field label{color:#b3b8c3;letter-spacing:.02em}
+.field input:focus,.field select:focus{border-color:var(--red);box-shadow:0 0 0 3px #ed1c2e15}
+.modal{border-color:#48212a;background:linear-gradient(150deg,#15161c,#0b0d11);box-shadow:0 30px 90px #000b}
+.modal h2{font-style:italic}
+.toast{border-color:#54212a;background:#171116}
+.squad-view-tabs{background:#0c0e12;border-color:#2a2e37;border-radius:10px}
+.squad-view-tabs .btn.active{background:linear-gradient(120deg,#ff263f,#a60f23);border-color:#ed1c2e}
+.builder-toolbar{padding:12px;border:1px solid #282d36;border-radius:12px;background:#0c0e12}
+#squadBuilderView .grid2>.panel{background:linear-gradient(145deg,#12151b,#0b0d11)}
+#squadBuilderView .pitch{
+ min-height:650px;border:1px solid #b49b5c;border-radius:12px;padding:28px 18px;
+ background:
+  linear-gradient(90deg,transparent 49.8%,#ffffff1a 50%,transparent 50.2%),
+  repeating-linear-gradient(0deg,#12472f 0 68px,#165438 68px 136px);
+ box-shadow:inset 0 0 0 6px #0003,inset 0 0 60px #0004,0 18px 40px #0005;
+}
+#squadBuilderView .pitch:before{inset:16px;border:1px solid #e6e8d880;border-radius:0}
+#squadBuilderView .pitch:after{width:125px;height:125px;border:1px solid #e6e8d880}
+#squadBuilderView .pitch-grid{min-height:600px;gap:22px 10px}
+#squadBuilderView .slot-card{
+ border:1px solid #e9d18b;border-radius:12px;
+ background:radial-gradient(ellipse at 50% 0%,#e6c77726,transparent 55%),linear-gradient(145deg,#24262c,#090b0f 70%,#1c1012);
+ box-shadow:0 9px 22px #0007,inset 0 0 0 2px #0004;
+}
+#squadBuilderView .slot-card:after{content:"FST";font-size:8px;font-weight:1000;letter-spacing:.2em;color:#e6c87970;margin-top:2px}
+#squadBuilderView .slot-rating{color:#f2d88d;text-shadow:0 1px #000}
+#squadBuilderView .slot-pos{color:#f0d58a}
+#squadBuilderView .slot-select{background:#0b0d11;border-color:#45404a;border-radius:7px}
+#squadBuilderView .pitch-slot .slot-select:focus{border-color:var(--red)}
+#squadBuilderView .saved-squad{background:#11141a;border-color:#2c313b}
+#squadBuilderView .stat{padding:13px}
+#squadBuilderView .stat strong{font-size:25px}
+.auth-gate{background:radial-gradient(ellipse at 50% 0%,#3a0d17 0,transparent 45%),#07080b}
+.auth-card{border:1px solid #48212a!important;background:linear-gradient(145deg,#15151b,#0b0d11)!important;box-shadow:0 25px 90px #0008}
+.auth-card h1{font-style:italic;text-transform:uppercase;letter-spacing:-.04em}
+.auth-card p{color:#a6acb7}
+.footer{border-top:1px solid #20232a}
+@media(max-width:1050px){
+ .layout{grid-template-columns:210px minmax(0,1fr)}
+ .fst-header-center{display:none}
+ .fst-account{gap:8px}
+ .signed-in-email{max-width:130px}
+ main{padding:22px 18px}
+}
+@media(max-width:800px){
+ .topbar.fst-topbar{height:auto;min-height:78px;padding:10px 14px;gap:10px}
+ .fst-crest{width:50px;height:50px;flex-basis:50px}
+ .fst-name{font-size:19px}
+ .fst-wordmark small{font-size:7px;letter-spacing:.19em;margin-top:6px}
+ .layout{grid-template-columns:1fr}
+ .sidebar{padding:10px 12px;border-right:0;border-bottom:1px solid #2b2d35}
+ .fst-clubcard,.navlabel,.sidebar-foot{display:none}
+ .nav{display:flex;gap:6px;overflow-x:auto;padding:0 0 2px}
+ .nav button{flex:0 0 auto;width:auto;min-height:40px;padding:9px 12px;font-size:11px}
+ .nav button .ico{width:auto}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid2{grid-template-columns:1fr}
+ .player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ main{padding:18px 12px 28px}
+ #squadBuilderView .grid2{grid-template-columns:1fr!important}
+ #squadBuilderView .pitch{min-height:590px;padding:20px 9px}
+ #squadBuilderView .pitch-grid{min-height:540px;gap:16px 4px}
+ #squadBuilderView .slot-card{min-height:115px}
+}
+@media(max-width:520px){
+ .topbar.fst-topbar{align-items:center}
+ .fst-brand{gap:8px}
+ .fst-crest{width:38px;height:43px;flex-basis:38px}
+ .fst-crest span{font-size:11px}
+ .fst-crest b{font-size:11px;right:5px;top:5px}
+ .fst-name{font-size:15px}
+ .fst-name em{margin-left:2px}
+ .fst-wordmark small{font-size:6px;letter-spacing:.14em}
+ .fst-account{gap:5px}
+ .signed-in-email{display:none}
+ .season{font-size:8px;padding:7px 7px;gap:4px}
+ .logout-btn{font-size:9px;padding:8px 9px}
+ .hero{padding:21px 17px;min-height:0}
+ .hero h1{font-size:31px}
+ .player-grid{gap:9px}
+ .player-card{min-height:190px;padding:9px}
+ #squadBuilderView .pitch{min-height:530px;padding:16px 5px}
+ #squadBuilderView .pitch-grid{min-height:485px;gap:12px 2px}
+ #squadBuilderView .slot-card{min-height:95px;padding:4px 2px}
+ #squadBuilderView .slot-card img{width:44px;height:48px}
+ #squadBuilderView .slot-name{font-size:7px}
+ #squadBuilderView .slot-select{font-size:7px;padding:5px 1px}
+}
+
+
+/* FUTURE STARS FC — identidade oficial do clube */
+:root{--silver:#c7c9ce;--silver-dim:#777d88}
+body{background:radial-gradient(ellipse at 50% -15%,#3b0a13 0,transparent 34%),radial-gradient(ellipse at 100% 45%,#17191f 0,transparent 42%),var(--bg)}
+.topbar.fst-topbar{background:radial-gradient(ellipse at 50% 0%,rgba(237,28,46,.14),transparent 42%),linear-gradient(100deg,#050506 0%,#111116 52%,#050506 100%);border-bottom:1px solid #454750}
+.fst-topbar:before{opacity:.18;background:repeating-linear-gradient(132deg,transparent 0 64px,rgba(195,198,207,.14) 65px 66px,transparent 67px 105px),repeating-linear-gradient(42deg,transparent 0 120px,rgba(237,28,46,.14) 121px 122px,transparent 123px 180px)}
+.fst-name{color:#f7f7f9;text-shadow:0 2px 16px #fff1}
+.fst-name span{color:var(--red)}
+.fst-wordmark small{color:#c1c4cc}
+.hero{background:radial-gradient(ellipse at 90% 5%,#4a101b6b,transparent 46%),linear-gradient(100deg,rgba(5,6,8,.98),rgba(19,17,21,.94) 68%,rgba(8,9,12,.98)),repeating-linear-gradient(135deg,transparent 0 25px,#ed1c2e 26px 27px);border-color:#5a2630}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,transparent 55%,#c7c9ce07 100%)}
+.hero .eyebrow{color:#d5d7dc}
+.hero h1 span{color:var(--red);text-shadow:0 0 25px #ed1c2e35}
+.btn:not(.primary){border-color:#353841}
+.panel,.stat{box-shadow:inset 0 1px #ffffff05}
+
 </style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
   <div class="auth-card">
-    <div class="brand"><div class="crest">🐆</div><div>FUTURE STARS <small>FOOTBALL CLUB · MANAGER</small></div></div>
+    <div class="brand fst-brand" aria-label="Future Stars FC">
+  <div class="crest fst-crest"><img src="assets/future-stars-fc-escudo.png" alt="Escudo oficial FUTURE STARS FC"></div>
+  <div class="fst-wordmark"><div class="fst-name">FUTURE <span>STARS</span><em>FC</em></div><small>FOOTBALL CLUB <i>·</i> MANAGER</small></div>
+</div>
     <div class="eyebrow" style="margin-top:28px">ACESSO PRIVADO · FST</div>
     <h1>Seu clube. Seus dados. Na nuvem.</h1>
     <p>Entre com uma das contas autorizadas para registrar partidas, gerenciar jogadores e sincronizar o histórico entre os dois gestores.</p>
@@ -112,17 +331,21 @@
   </div>
 </div>
 <div class="app" id="mainApp" style="visibility:hidden">
-<header class="topbar">
-  <div class="brand"><div class="crest">🐆</div><div>FUTURE STARS <small>FOOTBALL CLUB · MANAGER</small></div></div>
-  <div class="topbar-actions">
+<header class="topbar fst-topbar">
+  <div class="brand fst-brand" aria-label="Future Stars FC">
+    <div class="crest fst-crest"><img src="assets/future-stars-fc-escudo.png" alt="Escudo oficial FUTURE STARS FC"></div>
+    <div class="fst-wordmark"><div class="fst-name">FUTURE <span>STARS</span><em>FC</em></div><small>FOOTBALL CLUB <i>·</i> MANAGER</small></div>
+  </div>
+  <div class="fst-header-center">MAIS QUE UM TIME.<br><strong>UMA GERAÇÃO.</strong></div>
+  <div class="topbar-actions fst-account">
     <span class="signed-in-email" id="signedInEmail" aria-live="polite"></span>
-    <div class="season">TEMPORADA 01 <span style="color:#fff">/</span> 2026</div>
+    <div class="season"><span class="season-dot"></span> TEMPORADA 01 <span class="season-slash">/</span> 2026</div>
     <button class="btn logout-btn" id="logoutBtn" type="button" title="Sair da conta">↪ SAIR</button>
   </div>
 </header>
 <div class="layout">
 <aside class="sidebar">
-  <div class="clubcard"><div class="eyebrow">CLUBE EM DESTAQUE</div><strong>FUTURE STARS FC</strong><span>◆ TALENTO · DISCIPLINA · EVOLUÇÃO</span></div>
+  <div class="clubcard fst-clubcard"><img class="clubcard-emblem" src="assets/future-stars-fc-escudo.png" alt="Escudo FUTURE STARS FC"><div class="eyebrow">CLUBE EM DESTAQUE</div><strong>FUTURE <b>STARS</b> FC</strong><span>◆ TALENTO · DISCIPLINA · EVOLUÇÃO</span><div class="clubcard-motto">MAIS QUE UM TIME.<br>UMA GERAÇÃO.</div></div>
   <div class="navlabel">CENTRAL DO CLUBE</div>
   <nav class="nav" id="sideNav">
     <button class="active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
