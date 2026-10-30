@@ -12,6 +12,16 @@
 @media(max-width:520px){.brand{font-size:13px}.crest{width:35px;height:39px}.season{font-size:9px;padding:8px}.hero{padding:22px 18px}.hero p{font-size:12px}.stat{padding:13px}.stat strong{font-size:25px}.player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.player-card{min-height:195px}.form-grid{grid-template-columns:1fr}.section-head h2{font-size:17px}.match{gap:7px;padding:10px}.score{font-size:17px}}
 
 .auth-gate{position:fixed;inset:0;z-index:100;background:radial-gradient(ellipse at 80% -10%,#3c0c15 0,transparent 35%),#08090c;display:grid;place-items:center;padding:20px}.auth-card{width:min(460px,100%);background:#111318;border:1px solid #3b2026;border-radius:20px;padding:28px;box-shadow:0 25px 90px #0009}.auth-card h1{font-size:27px;margin:12px 0}.auth-card p{color:#aeb3bd;font-size:13px;line-height:1.7}.auth-card .btn{width:100%;margin-top:12px}.auth-status{font-size:12px;color:#f3c96b;min-height:18px;margin-top:12px}.cloud-pill{font-size:10px;color:#48d597;border:1px solid #205740;background:#0e251c;border-radius:999px;padding:7px 10px;margin-left:8px}.auth-user{display:flex;align-items:center;gap:8px;font-size:11px;color:#aeb3bd}.auth-user button{padding:7px 9px}
+
+.squad-view-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 20px;padding:5px;background:#101116;border:1px solid var(--line);border-radius:12px;width:max-content;max-width:100%}
+.squad-view-tabs .btn{border-color:transparent;background:transparent}
+.squad-view-tabs .btn.active{background:linear-gradient(135deg,#ed1c2e,#a90f20);border-color:#ff4454;color:#fff;box-shadow:0 6px 20px #ed1c2e30}
+#squadBuilderView .builder-toolbar{display:grid;grid-template-columns:minmax(160px,1fr) minmax(140px,.6fr) auto auto;gap:12px;align-items:end;margin-bottom:18px}
+#squadBuilderView .panel{border-color:#333844}
+#squadBuilderView .pitch{background:repeating-linear-gradient(0deg,#125338 0 58px,#176342 58px 116px),linear-gradient(90deg,#0c3e2b,#176342);box-shadow:inset 0 0 70px #0004}
+#squadBuilderView .pitch:before{border-radius:0;border-color:#ffffff70}
+#squadBuilderView .pitch:after{border-color:#ffffff70}
+@media(max-width:800px){#squadBuilderView .builder-toolbar{grid-template-columns:1fr 1fr}#squadBuilderView .builder-toolbar button{width:100%}#squadBuilderView .grid2{grid-template-columns:1fr!important}.squad-view-tabs{width:100%}.squad-view-tabs .btn{flex:1}}
 </style>
 </head>
 <body>
@@ -67,12 +77,10 @@
 </section>
 <section id="page-squad" class="page hidden">
   <h1 class="page-title">Elenco & Ultimate Team</h1><p class="page-subtitle">Monte seu grupo, cadastre atletas e acompanhe seus cards.</p>
-  <div class="toolbar"><span class="pill">PLAYER DATABASE</span><button class="btn primary" data-action="add-player">＋ ADICIONAR JOGADOR</button></div>
+  <div class="squad-view-tabs"><button type="button" class="btn active" data-squad-view="players">👥 JOGADORES</button><button type="button" class="btn" data-squad-view="builder">⚽ MONTAR ELENCO</button></div><div id="squadPlayersView"><div class="toolbar"><span class="pill">PLAYER DATABASE</span><button class="btn primary" data-action="add-player">＋ ADICIONAR JOGADOR</button></div>
   <div class="player-tools"><input id="playerSearch" type="search" placeholder="Buscar jogador pelo nome..." aria-label="Buscar jogador"><select id="playerPositionFilter" aria-label="Filtrar por posição"><option value="">Todas as posições</option><option>GOL</option><option>ZAG</option><option>LE</option><option>LD</option><option>VOL</option><option>MC</option><option>MEI</option><option>ME</option><option>MD</option><option>PE</option><option>PD</option><option>ATA</option></select><select id="playerSort" aria-label="Ordenar jogadores"><option value="rating-desc">Overall: maior primeiro</option><option value="rating-asc">Overall: menor primeiro</option><option value="name-asc">Nome: A–Z</option></select></div>
-  <div id="allPlayers" class="player-grid"></div>
-</section>
-<section id="page-squadbuilder" class="page hidden">
-  <h1 class="page-title">Montador de elenco</h1><p class="page-subtitle">Monte sua escalação no estilo Squad Builder: escolha a formação e preencha cada posição com os jogadores já cadastrados no FUTURE STARS FC.</p>
+  <div id="allPlayers" class="player-grid"></div></div>
+<div id="squadBuilderView" class="hidden">
   <div class="panel">
     <div class="builder-toolbar">
       <div class="field" style="margin:0"><label>Nome da escalação</label><input id="lineupName" maxlength="50" placeholder="Ex.: Titulares da Liga"></div>
@@ -85,8 +93,7 @@
       <div class="panel" style="padding:14px"><div class="eyebrow">RESUMO DA ESCALAÇÃO</div><div class="stats" style="grid-template-columns:1fr 1fr;gap:8px"><div class="stat"><div class="stat-top">JOGADORES</div><strong id="lineupCount" style="font-size:25px">0/11</strong></div><div class="stat"><div class="stat-top">OVR MÉDIO</div><strong id="lineupOvr" style="font-size:25px">—</strong></div></div><div class="field"><label>Escalações salvas</label><div id="savedSquads" class="saved-squads"></div></div></div>
     </div>
   </div>
-</section>
-<section id="page-competitions" class="page hidden">
+</div></section><section id="page-competitions" class="page hidden">
   <h1 class="page-title">Competições</h1><p class="page-subtitle">Organize temporadas, ligas e copas do FUTURE STARS FC.</p>
   <div class="toolbar"><span class="pill">TEMPORADA 01 · 2026</span><button class="btn primary" data-action="add-competition">＋ NOVA COMPETIÇÃO</button></div>
   <div id="allCompetitions" class="competition-list"></div><div id="competitionDetails" class="section"></div>
@@ -128,7 +135,7 @@ data.squads=Array.isArray(data.squads)?data.squads:[];data.activeLineup= data.ac
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function toast(msg){const r=document.getElementById('toastRoot');r.innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>r.innerHTML='',2600)}
 function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById('page-'+page)?.classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'});render()}
-document.addEventListener('click',e=>{const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a)openModal(a.dataset.action)});
+document.addEventListener('click',e=>{const sv=e.target.closest('[data-squad-view]');if(sv){const view=sv.dataset.squadView;document.getElementById('squadPlayersView')?.classList.toggle('hidden',view!=='players');document.getElementById('squadBuilderView')?.classList.toggle('hidden',view!=='builder');document.querySelectorAll('[data-squad-view]').forEach(b=>b.classList.toggle('active',b===sv));if(view==='builder')renderSquadBuilder();return;}const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a)openModal(a.dataset.action)});
 function resultLabel(m){if(m.our>m.their)return'VITÓRIA';if(m.our<m.their)return'DERROTA';return'EMPATE'}
 function matchHTML(m){const scorers=m.scorers?`<div style="grid-column:1/-1;color:#d8dbe2;font-size:11px"><b style="color:#ffadb5">⚽ Gols:</b> ${esc(m.scorers)}</div>`:'';const assists=m.assists?`<div style="grid-column:1/-1;color:#d8dbe2;font-size:11px"><b style="color:#ffadb5">🅰 Assistências:</b> ${esc(m.assists)}</div>`:'';const mvp=m.mvp?`<div style="grid-column:1/-1;color:#f4d47a;font-size:11px"><b>⭐ MVP da partida:</b> ${esc(m.mvp)}</div>`:'';const notes=m.notes?`<div style="grid-column:1/-1;color:#9ba2ae;font-size:11px">${esc(m.notes)}</div>`:'';return `<div class="match"><div class="team">${esc(data.settings.clubName||'FUTURE STARS FC')}</div><div class="score">${Number(m.our)||0} <span style="color:#707683">:</span> ${Number(m.their)||0}</div><div class="team">${esc(m.opponent)}</div><div class="match-meta"><span>${esc(m.date)} · ${esc(m.competition||'Amistoso')}</span><span class="badge">${resultLabel(m)}</span><button class="btn" style="padding:4px 7px;font-size:9px" onclick="deleteItem('matches',${m.id})">EXCLUIR</button></div>${scorers}${assists}${mvp}${notes}</div>`}
 function playerHTML(p){const image=p.imageUrl?`<img class="player-card-image" src="${esc(p.imageUrl)}" alt="Cartinha de ${esc(p.name)}" loading="lazy">`:'<div class="player-avatar" aria-label="Sem imagem">♟</div>';return `<article class="player-card"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="player-rating">${Number(p.rating)||0}</div><div class="player-position">${esc(p.position)}</div></div><span style="font-size:19px">🐆</span></div>${image}<div><div class="player-name">${esc(p.name)}</div><div class="player-actions"><button class="btn" onclick="playerHistory(${p.id})">HISTÓRICO</button><button class="btn" onclick="editPlayer(${p.id})">EDITAR</button><button class="btn" onclick="deleteItem('players',${p.id})">EXCLUIR</button></div></div></article>`}
