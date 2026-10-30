@@ -25,7 +25,7 @@ function cloud(message, isError = false) {
 function showApp(user) {
   gate.style.display = "none";
   appRoot.style.visibility = "visible";
-  emailEl.textContent = user.email || "Conta autorizada";
+  if (emailEl) emailEl.textContent = user.email || "Conta autorizada";
 }
 function showGate(message) {
   gate.style.display = "grid";
@@ -72,7 +72,7 @@ if (auth && db && sharedDoc) {
     if (stopListening) { stopListening(); stopListening = null; }
     currentUser = user;
     if (!user) {
-      emailEl.textContent = "";
+      if (emailEl) emailEl.textContent = "";
       cloud("☁ DESCONECTADO", true);
       showGate("Entre com sua conta Google autorizada para continuar.");
       return;
