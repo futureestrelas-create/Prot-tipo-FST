@@ -22,6 +22,75 @@
 #squadBuilderView .pitch:before{border-radius:0;border-color:#ffffff70}
 #squadBuilderView .pitch:after{border-color:#ffffff70}
 @media(max-width:800px){#squadBuilderView .builder-toolbar{grid-template-columns:1fr 1fr}#squadBuilderView .builder-toolbar button{width:100%}#squadBuilderView .grid2{grid-template-columns:1fr!important}.squad-view-tabs{width:100%}.squad-view-tabs .btn{flex:1}}
+
+/* FUTURE STARS FC — visual polish for the squad builder */
+#squadBuilderView .panel:first-child{background:linear-gradient(145deg,#11141b,#0b0d12 72%);border:1px solid #2b303b;box-shadow:0 18px 45px #0005}
+#squadBuilderView .builder-toolbar{display:grid;grid-template-columns:minmax(190px,1fr) minmax(145px,.55fr) auto auto;gap:12px;align-items:end;padding:4px 2px 16px}
+#squadBuilderView .pitch{min-height:0;height:auto;overflow:hidden;position:relative;padding:22px 18px;border:2px solid #9db9a8;border-radius:8px;background:repeating-linear-gradient(0deg,#105137 0 73px,#176443 73px 146px);box-shadow:inset 0 0 90px #00190f99,0 18px 40px #0005}
+#squadBuilderView .pitch:before{inset:12px;border:2px solid #e5f1e6a8;border-radius:0;z-index:0}
+#squadBuilderView .pitch:after{display:none}
+#squadBuilderView #pitchGrid{display:block;position:relative;min-height:760px;z-index:1}
+#squadBuilderView .pitch-markings{position:absolute;inset:12px;pointer-events:none;z-index:0;overflow:hidden}
+#squadBuilderView .pitch-halfway{position:absolute;left:0;right:0;top:50%;border-top:2px solid #e5f1e67a}
+#squadBuilderView .pitch-center-circle{position:absolute;left:50%;top:50%;width:142px;height:142px;transform:translate(-50%,-50%);border:2px solid #e5f1e67a;border-radius:50%}
+#squadBuilderView .pitch-center-spot{position:absolute;left:50%;top:50%;width:7px;height:7px;transform:translate(-50%,-50%);border-radius:50%;background:#e5f1e6a8}
+#squadBuilderView .pitch-box{position:absolute;left:25%;width:50%;height:14%;border:2px solid #e5f1e67a}
+#squadBuilderView .pitch-box-top{top:0;border-top:0}
+#squadBuilderView .pitch-box-bottom{bottom:0;border-bottom:0}
+#squadBuilderView .pitch-six{position:absolute;left:38%;width:24%;height:6%;border:2px solid #e5f1e67a}
+#squadBuilderView .pitch-six-top{top:0;border-top:0}
+#squadBuilderView .pitch-six-bottom{bottom:0;border-bottom:0}
+#squadBuilderView .pitch-arc{position:absolute;left:42%;width:16%;height:5%;border:2px solid #e5f1e67a;border-radius:50%}
+#squadBuilderView .pitch-arc-top{top:12%;transform:translateY(-55%)}
+#squadBuilderView .pitch-arc-bottom{bottom:12%;transform:translateY(55%)}
+#squadBuilderView .pitch-rows{position:relative;z-index:2;min-height:760px;display:flex;flex-direction:column;justify-content:space-around;gap:18px;padding:4px 0}
+#squadBuilderView .pitch-row{display:flex;justify-content:space-evenly;align-items:center;gap:8px;width:100%;position:relative}
+#squadBuilderView .pitch-row-ata{padding:0 5%}
+#squadBuilderView .pitch-row-mei,#squadBuilderView .pitch-row-vol,#squadBuilderView .pitch-row-mc{padding:0 2%}
+#squadBuilderView .pitch-row-def{padding:0}
+#squadBuilderView .pitch-row-gk{justify-content:center}
+#squadBuilderView .pitch-slot{flex:1 1 0;max-width:124px;min-width:0;gap:7px}
+#squadBuilderView .slot-card{width:100%;min-height:166px;height:166px;position:relative;overflow:hidden;padding:8px 6px 6px;border-radius:11px;border:1px solid #d5bd74;background:linear-gradient(155deg,#f6e8b8 0%,#c6a85a 18%,#e9d99a 48%,#8e6a2e 100%);color:#221a0a;box-shadow:0 8px 18px #00180f80,inset 0 0 0 2px #fff5;transition:transform .18s,box-shadow .18s}
+#squadBuilderView .slot-card.is-filled:hover{transform:translateY(-4px);box-shadow:0 14px 24px #00180faa}
+#squadBuilderView .slot-card.is-empty{justify-content:space-around;background:linear-gradient(155deg,#182820,#0d1712);border:1px dashed #d4b45e;color:#f0ead6;box-shadow:0 8px 18px #00180f70}
+#squadBuilderView .fst-card-top{width:100%;display:flex;justify-content:space-between;align-items:flex-start;z-index:2}
+#squadBuilderView .slot-rating{font-size:25px;line-height:1;color:#211a0b;text-shadow:0 1px #fff7}
+#squadBuilderView .slot-pos{font-size:10px;color:#38290b;background:#fff6;padding:3px 4px;border-radius:4px}
+#squadBuilderView .fst-card-image{position:absolute;top:24px;left:7%;width:86%!important;height:105px!important;object-fit:contain;filter:drop-shadow(0 4px 3px #0005)}
+#squadBuilderView .fst-card-silhouette{font-size:50px;line-height:1;position:absolute;top:53px;left:0;right:0;text-align:center;color:#59451d;opacity:.8}
+#squadBuilderView .slot-name{z-index:2;max-width:100%;font-size:10px;line-height:1.1;padding:4px 2px 3px;color:#201807;text-shadow:0 1px #fff7;background:#f8edc4b8;border-radius:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#squadBuilderView .fst-card-foot{width:100%;display:flex;justify-content:space-between;font-size:8px;font-weight:1000;color:#5c451a;letter-spacing:.12em}
+#squadBuilderView .fst-plus{font-size:31px;line-height:1;color:#f2c95c;text-shadow:0 0 15px #f2c95c55}
+#squadBuilderView .fst-empty-pos{font-size:11px;font-weight:900;letter-spacing:.1em;color:#f2c95c}
+#squadBuilderView .slot-card.is-empty .slot-name{background:transparent;color:#d4e4d9;font-size:10px;white-space:normal}
+#squadBuilderView .slot-select{width:100%;max-width:130px;background:#101319;border:1px solid #49534d;border-radius:7px;padding:7px 5px;font-size:10px}
+#squadBuilderView .pitch-slot[data-line="GK"] .slot-card{min-height:166px}
+#squadBuilderView .saved-squad{background:linear-gradient(120deg,#171a20,#111318);border-color:#333944}
+#squadBuilderView .stat{background:linear-gradient(145deg,#20242c,#121419);border-color:#343945}
+@media(max-width:760px){
+ #squadBuilderView .builder-toolbar{grid-template-columns:1fr 1fr}
+ #squadBuilderView .builder-toolbar .field:first-child{grid-column:1/-1}
+ #squadBuilderView .pitch{padding:16px 9px}
+ #squadBuilderView #pitchGrid,#squadBuilderView .pitch-rows{min-height:660px}
+ #squadBuilderView .pitch-row{gap:4px}
+ #squadBuilderView .pitch-slot{max-width:92px}
+ #squadBuilderView .slot-card,#squadBuilderView .pitch-slot[data-line="GK"] .slot-card{height:126px;min-height:126px;padding:5px 3px}
+ #squadBuilderView .slot-rating{font-size:19px}
+ #squadBuilderView .fst-card-image{top:22px;height:77px!important}
+ #squadBuilderView .fst-card-silhouette{top:42px;font-size:38px}
+ #squadBuilderView .slot-name{font-size:8px}
+ #squadBuilderView .slot-pos{font-size:8px;padding:2px}
+ #squadBuilderView .slot-select{font-size:8px;padding:5px 2px}
+ #squadBuilderView .pitch-center-circle{width:100px;height:100px}
+}
+@media(max-width:420px){
+ #squadBuilderView .pitch{padding:12px 5px}
+ #squadBuilderView .pitch-row{gap:2px}
+ #squadBuilderView .pitch-slot{max-width:76px}
+ #squadBuilderView .slot-card,#squadBuilderView .pitch-slot[data-line="GK"] .slot-card{height:112px;min-height:112px}
+ #squadBuilderView .slot-name{font-size:7px}
+ #squadBuilderView .slot-select{font-size:7px}
+}
 </style>
 </head>
 <body>
@@ -166,7 +235,35 @@ const FORMATIONS={
  '352':[{line:'ATA',pos:['ATA','ATA']},{line:'MEI',pos:['ME','MEI','MEI','MD']},{line:'DEF',pos:['ZAG','ZAG','ZAG']},{line:'GK',pos:['GOL']}],
  '4141':[{line:'ATA',pos:['ATA']},{line:'MEI',pos:['ME','MC','MC','MD']},{line:'VOL',pos:['VOL']},{line:'DEF',pos:['LE','ZAG','ZAG','LD']},{line:'GK',pos:['GOL']}]
 };
-function renderSquadBuilder(){const grid=document.getElementById('pitchGrid');if(!grid)return;data.activeLineup=data.activeLineup||{name:'Minha escalação',formation:'433',slots:{}};const lineup=data.activeLineup;lineup.slots=lineup.slots||{};const formation=document.getElementById('lineupFormation');if(formation)formation.value=lineup.formation||'433';const nameInput=document.getElementById('lineupName');if(nameInput&&document.activeElement!==nameInput)nameInput.value=lineup.name||'Minha escalação';const groups=FORMATIONS[lineup.formation||'433']||FORMATIONS['433'];let html='',slotIndex=0,selected=[];groups.forEach(group=>{html+=`<div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:start">`;group.pos.forEach(pos=>{const key='s'+slotIndex++,pid=String(lineup.slots[key]||'');const player=data.players.find(p=>String(p.id)===pid);if(player)selected.push(player);const card=player?`<div class="slot-card">${player.imageUrl?`<img src="${esc(player.imageUrl)}" alt="">`:`<div class="slot-rating">${Number(player.rating)||0}</div><div style="font-size:28px">♟</div>`}<div class="slot-rating">${Number(player.rating)||0}</div><div class="slot-name">${esc(player.name)}</div><div class="slot-pos">${esc(player.position||pos)}</div></div>`:`<div class="slot-card" style="border-style:dashed;background:#101b16"><div class="slot-rating" style="color:#ffffff80">＋</div><div style="font-size:10px;color:#d1e6da">${esc(pos)}</div><div class="slot-name" style="color:#b9d7c7">Adicionar jogador</div></div>`;html+=`<div class="pitch-slot" data-line="${group.line}">${card}<select class="slot-select" data-slot="${key}" aria-label="Escolher ${pos}"><option value="">${pos} · vazio</option>${data.players.map(p=>`<option value="${esc(p.id)}" ${String(p.id)===pid?'selected':''}>${esc(p.name)} (${Number(p.rating)||0})</option>`).join('')}</select></div>`});html+='</div>'});grid.innerHTML=html;document.getElementById('lineupCount').textContent=`${selected.length}/11`;document.getElementById('lineupOvr').textContent=selected.length?Math.round(selected.reduce((a,p)=>a+(Number(p.rating)||0),0)/selected.length):'—';const saved=document.getElementById('savedSquads');if(saved)saved.innerHTML=data.squads.length?data.squads.map((s,i)=>`<div class="saved-squad"><div><strong>${esc(s.name||'Escalação')}</strong><small>${esc(s.formation||'433')} · ${Object.values(s.slots||{}).filter(Boolean).length}/11 jogadores</small></div><div style="display:flex;gap:5px"><button class="btn" style="padding:6px" onclick="loadLineup(${i})">ABRIR</button><button class="btn" style="padding:6px" onclick="deleteLineup(${i})">×</button></div></div>`).join(''):'<div class="empty" style="grid-column:1/-1">Nenhuma escalação salva.</div>'}
+function renderSquadBuilder(){
+ const grid=document.getElementById('pitchGrid');if(!grid)return;
+ data.activeLineup=data.activeLineup||{name:'Minha escalação',formation:'433',slots:{}};
+ const lineup=data.activeLineup;lineup.slots=lineup.slots||{};
+ const formation=document.getElementById('lineupFormation');
+ if(formation)formation.value=lineup.formation||'433';
+ const nameInput=document.getElementById('lineupName');
+ if(nameInput&&document.activeElement!==nameInput)nameInput.value=lineup.name||'Minha escalação';
+ const groups=FORMATIONS[lineup.formation||'433']||FORMATIONS['433'];
+ let slotIndex=0,selected=[];
+ const rows=groups.map(group=>{
+   const slots=group.pos.map(pos=>{
+     const key='s'+slotIndex++,pid=String(lineup.slots[key]||'');
+     const player=data.players.find(p=>String(p.id)===pid);
+     if(player)selected.push(player);
+     const image=player&&player.imageUrl?`<img class="fst-card-image" src="${esc(player.imageUrl)}" alt="${esc(player.name)}">`:`<div class="fst-card-silhouette">${player?'♟':'＋'}</div>`;
+     const card=player
+       ? `<div class="slot-card is-filled"><div class="fst-card-top"><strong class="slot-rating">${Number(player.rating)||0}</strong><span class="slot-pos">${esc(player.position||pos)}</span></div>${image}<div class="slot-name">${esc(player.name)}</div><div class="fst-card-foot"><span>FST</span><span>★</span></div></div>`
+       : `<div class="slot-card is-empty"><div class="fst-plus">＋</div><div class="fst-empty-pos">${esc(pos)}</div><div class="slot-name">Adicionar jogador</div></div>`;
+     return `<div class="pitch-slot" data-line="${group.line}">${card}<select class="slot-select" data-slot="${key}" aria-label="Escolher ${pos}"><option value="">${pos} · vazio</option>${data.players.map(p=>`<option value="${esc(p.id)}" ${String(p.id)===pid?'selected':''}>${esc(p.name)} (${Number(p.rating)||0})</option>`).join('')}</select></div>`;
+   }).join('');
+   return `<div class="pitch-row pitch-row-${String(group.line).toLowerCase()}" data-line="${group.line}">${slots}</div>`;
+ }).join('');
+ grid.innerHTML=`<div class="pitch-markings" aria-hidden="true"><div class="pitch-halfway"></div><div class="pitch-center-circle"></div><div class="pitch-center-spot"></div><div class="pitch-box pitch-box-top"></div><div class="pitch-six pitch-six-top"></div><div class="pitch-box pitch-box-bottom"></div><div class="pitch-six pitch-six-bottom"></div><div class="pitch-arc pitch-arc-top"></div><div class="pitch-arc pitch-arc-bottom"></div></div><div class="pitch-rows">${rows}</div>`;
+ document.getElementById('lineupCount').textContent=`${selected.length}/11`;
+ document.getElementById('lineupOvr').textContent=selected.length?Math.round(selected.reduce((a,p)=>a+(Number(p.rating)||0),0)/selected.length):'—';
+ const saved=document.getElementById('savedSquads');
+ if(saved)saved.innerHTML=data.squads.length?data.squads.map((s,i)=>`<div class="saved-squad"><div><strong>${esc(s.name||'Escalação')}</strong><small>${esc(s.formation||'433')} · ${Object.values(s.slots||{}).filter(Boolean).length}/11 jogadores</small></div><div style="display:flex;gap:5px"><button class="btn" style="padding:6px" onclick="loadLineup(${i})">ABRIR</button><button class="btn" style="padding:6px" onclick="deleteLineup(${i})">×</button></div></div>`).join(''):'<div class="empty" style="grid-column:1/-1">Nenhuma escalação salva.</div>';
+}
 function saveLineup(){const name=(document.getElementById('lineupName').value||'Minha escalação').trim();data.activeLineup.name=name;data.activeLineup.formation=document.getElementById('lineupFormation').value;const snapshot=JSON.parse(JSON.stringify(data.activeLineup));const idx=data.squads.findIndex(s=>s.name===name);if(idx>=0)data.squads[idx]=snapshot;else data.squads.push(snapshot);save();renderSquadBuilder();toast('Escalação salva e sincronizada!')}
 function loadLineup(i){const s=data.squads[i];if(!s)return;data.activeLineup=JSON.parse(JSON.stringify(s));save();renderSquadBuilder();toast('Escalação carregada!')}
 function deleteLineup(i){if(!confirm('Excluir esta escalação salva?'))return;data.squads.splice(i,1);save();renderSquadBuilder()}
