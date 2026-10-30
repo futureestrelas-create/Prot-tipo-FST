@@ -1,12 +1,6 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
+// Configuração pública do aplicativo Web Firebase.
+// As chaves de configuração Web identificam o projeto; a segurança real é feita pelas regras do Firestore.
+window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyAtUJT7LhQH7OQGuBj4Gy8paOiygMcCLaA",
   authDomain: "future-stars-manager.firebaseapp.com",
   projectId: "future-stars-manager",
@@ -16,6 +10,8 @@ const firebaseConfig = {
   measurementId: "G-8VYJ3B0BL0"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Contas permitidas na interface. O mesmo controle também é aplicado nas regras do Firestore.
+window.FST_ALLOWED_EMAILS = [
+  "hernandesfifa15ps4@gmail.com",
+  "lucasmitoo4514@gmail.com"
+];
