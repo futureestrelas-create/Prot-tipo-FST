@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
 const gate = document.getElementById("authGate");
 const appRoot = document.getElementById("mainApp");
@@ -34,7 +33,7 @@ function showGate(message) {
   status(message);
 }
 
-let app, auth, db, storage, sharedDoc;
+let app, auth, db, sharedDoc;
 try {
   if (!window.FIREBASE_CONFIG) throw new Error("firebase-config.js não carregou.");
   app = initializeApp(window.FIREBASE_CONFIG);
@@ -122,29 +121,45 @@ if (auth && db && sharedDoc) {
   });
 }
 
-// Imagens de cartinhas ficam no Firebase Storage; somente a referência/URL vai para o Firestore.
+// Cartinhas no Cloudinary (upload unsigned). O Firebase continua responsável pelo login e Firestore.
+const CLOUDINARY_CLOUD_NAME = "gwo9zt8e";
+const CLOUDINARY_UPLOAD_PRESET = "fst_player_cards";
 window.FST_UPLOAD_PLAYER_IMAGE = async function(file, playerId) {
-  if (!currentUser || !storage) throw new Error("Entre com uma conta autorizada para enviar imagens.");
-  if (!file || file.type !== "image/jpeg") throw new Error("Envie uma imagem JPG/JPEG.");
+  if (!currentUser || !currentUser.email || !allowed.includes(currentUser.email.toLowerCase())) {
+    throw new Error("Entre com uma conta autorizada para enviar imagens.");
+  }
+  if (!file || !/^image\/(jpeg|jpg|webp|png)$/.test(file.type)) {
+    throw new Error("Envie uma imagem JPG, PNG ou WEBP.");
+  }
   if (file.size > 2 * 1024 * 1024) throw new Error("A imagem deve ter até 2 MB.");
-  const safeName = String(file.name || "cartinha.jpg").replace(/[^a-zA-Z0-9._-]/g, "_").slice(-80);
-  const path = `player-cards/${playerId}_${Date.now()}_${safeName}`;
-  const fileRef = ref(storage, path);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", "fst-player-cards");
+  formData.append("public_id", `player_${String(playerId).replace(/[^a-zA-Z0-9_-]/g, "_")}_${Date.now()}`);
   try {
-    await uploadBytes(fileRef, file, { contentType: "image/jpeg" });
-    const url = await getDownloadURL(fileRef);
-    return { url, path };
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+      method: "POST",
+      body: formData
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      console.error("Cloudinary upload error:", result);
+      if (result.error?.message?.toLowerCase().includes("preset")) {
+        throw new Error("O Cloudinary não encontrou o preset fst_player_cards. Confira o nome e se o modo está como Unsigned.");
+      }
+      throw new Error(result.error?.message || "O Cloudinary recusou o envio da imagem.");
+    }
+    return { url: result.secure_url, path: result.public_id };
   } catch (err) {
     console.error(err);
-    if (err.code === "storage/unauthorized") throw new Error("O Firebase Storage bloqueou o envio. Confira se o Storage está ativado e publique as regras fornecidas.");
-    if (err.code === "storage/bucket-not-found" || err.code === "storage/no-default-bucket") throw new Error("O Firebase Storage ainda não está configurado neste projeto.");
-    throw new Error("Não foi possível enviar a cartinha. Verifique o Firebase Storage e tente novamente.");
+    if (err instanceof TypeError) throw new Error("Não foi possível conectar ao Cloudinary. Verifique sua internet e tente novamente.");
+    throw err;
   }
 };
-window.FST_DELETE_PLAYER_IMAGE = async function(path) {
-  if (!currentUser || !storage || !path) return;
-  await deleteObject(ref(storage, path));
-};
+// Upload unsigned não permite excluir arquivos com segurança pelo navegador. A exclusão do jogador
+// continua funcionando; a imagem antiga poderá permanecer na biblioteca do Cloudinary.
+window.FST_DELETE_PLAYER_IMAGE = async function(_path) { return; };
 
 window.FST_CLOUD_SAVE = function (data) {
   if (!currentUser || !sharedDoc || applyingCloudData) return;
