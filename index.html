@@ -487,6 +487,53 @@ main{padding:24px 26px 34px}
 @media(max-width:850px){.dash-v2-grid{grid-template-columns:1fr}.dash-v2-field{min-height:255px;grid-template-rows:repeat(3,minmax(65px,auto));padding:18px 8px}.dash-v2-player-card{width:48px;height:61px}.dash-v2-player-name{font-size:9px}.dash-v2-squad-head{padding:15px 14px 0}}
 @media(max-width:480px){.dash-v2-card{padding:16px}.dash-v2-title{font-size:18px}.dash-v2-field{gap:3px}.dash-v2-player-card{width:41px;height:53px}.dash-v2-player-card b{font-size:14px}.dash-v2-player-name{font-size:8px}}
 
+
+/* FUTURE STARS FC — UT player detail profile */
+.player-card{cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
+.player-card:hover{transform:translateY(-4px);border-color:#9bd5b1;box-shadow:0 14px 30px #0007}
+.player-card:focus-visible{outline:2px solid #67f5a5;outline-offset:3px}
+.ut-player-modal{width:min(1000px,100%);padding:0;background:#101114;border:1px solid #34383e;overflow:hidden}
+.ut-player-top{display:grid;grid-template-columns:235px minmax(0,1fr);gap:0;background:linear-gradient(120deg,#15191b,#101114 65%);border-bottom:1px solid #2d3135}
+.ut-player-hero{padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 20%,#164d34,#111714 70%);border-right:1px solid #2a3930}
+.ut-player-card-art{width:150px;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 10px;border:2px solid #a9d6b7;border-radius:15px;background:linear-gradient(150deg,#2b4535,#101712 62%,#526f5b);box-shadow:0 12px 32px #0008;position:relative;overflow:hidden}
+.ut-player-card-art:after{content:"FST";position:absolute;right:-4px;bottom:28px;font-size:50px;font-weight:1000;color:#ffffff10;transform:rotate(-12deg)}
+.ut-player-card-art img{width:100%;height:120px;object-fit:contain;z-index:1;filter:drop-shadow(0 4px 5px #0008)}
+.ut-player-card-art .ut-silhouette{font-size:76px;line-height:120px;color:#c8e5d1}
+.ut-player-card-art .ut-rating{align-self:flex-start;font-size:32px;line-height:1;font-weight:1000}
+.ut-player-card-art .ut-pos{font-size:11px;color:#7fffb4;font-weight:900}
+.ut-player-card-art .ut-name{z-index:2;width:100%;text-align:center;font-size:12px;font-weight:1000;text-transform:uppercase;overflow-wrap:anywhere}
+.ut-player-country{font-size:12px;color:#a8b6ad;margin-top:12px;text-align:center}
+.ut-player-overview{padding:22px;min-width:0}
+.ut-player-modal-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.ut-player-modal-head h2{font-size:25px;margin:5px 0}
+.ut-player-modal-head p{margin:0;color:#9aa49e;font-size:12px}
+.ut-player-tags{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}
+.ut-player-tag{border:1px solid #315c43;background:#10281a;color:#8dffba;border-radius:7px;padding:6px 9px;font-size:10px;font-weight:900}
+.ut-player-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:17px}
+.ut-player-kpi{background:#191c1e;border:1px solid #2d3330;border-radius:10px;padding:12px;min-width:0}
+.ut-player-kpi small{display:block;font-size:9px;color:#929f97;font-weight:900;letter-spacing:.08em}
+.ut-player-kpi strong{display:block;font-size:25px;margin-top:7px;line-height:1}
+.ut-player-kpi em{display:block;font-style:normal;font-size:10px;color:#68e99f;margin-top:6px}
+.ut-player-body{padding:18px 22px 22px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ut-player-panel{background:#151719;border:1px solid #2a302d;border-radius:12px;padding:15px;min-width:0}
+.ut-player-panel h3{font-size:13px;margin:0 0 12px}
+.ut-player-info-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #262b28;font-size:11px}
+.ut-player-info-row:last-child{border-bottom:0}
+.ut-player-info-row span{color:#96a39a}
+.ut-player-info-row b{text-align:right;overflow-wrap:anywhere}
+.ut-player-statline{display:grid;grid-template-columns:92px minmax(0,1fr) 28px;gap:9px;align-items:center;margin:11px 0;font-size:10px}
+.ut-player-statline span{color:#c5d0c8}
+.ut-player-statline i{display:block;height:5px;border-radius:99px;background:#2b332e;overflow:hidden}
+.ut-player-statline i b{display:block;height:100%;background:linear-gradient(90deg,#17864f,#6cffac);border-radius:99px}
+.ut-player-statline strong{text-align:right;color:#8affb5}
+.ut-player-recent{display:grid;gap:8px}
+.ut-player-match{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px;border:1px solid #2a302d;border-radius:9px;background:#101211}
+.ut-player-match strong{font-size:11px}
+.ut-player-match small{display:block;font-size:9px;color:#9aa69e;margin-top:4px}
+.ut-player-match b{font-size:15px;white-space:nowrap}
+.ut-player-modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:0 22px 20px}
+@media(max-width:700px){.ut-player-top{grid-template-columns:1fr}.ut-player-hero{border-right:0;border-bottom:1px solid #2a3930;padding:18px}.ut-player-card-art{width:125px;min-height:165px}.ut-player-card-art img{height:90px}.ut-player-card-art .ut-silhouette{line-height:90px}.ut-player-modal-head h2{font-size:20px}.ut-player-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.ut-player-body{grid-template-columns:1fr;padding:14px}.ut-player-overview{padding:17px}.ut-player-modal-foot{padding:0 14px 16px}}
+
 </style>
 
 <style id="fst-minimal-header-layout">
@@ -769,8 +816,30 @@ function fstPlayerBadgeHTML(p){
  const shortTarget=best.target>=1000?(best.target/1000)+'K':best.target;
  return `<span class="player-earned-badge" style="--player-medal:${esc(best.color||'#ff4b25')}" title="${esc(p.name)} · ${esc(allTitles)}" aria-label="Badge conquistada: ${esc(best.title)}"><span class="player-earned-badge-number">${esc(shortTarget)}</span><span class="player-earned-badge-icon">${esc(best.icon||'★')}</span>${earned.length>1?`<i>+${earned.length-1}</i>`:''}</span>`;
 }
-function playerHTML(p){const image=p.imageUrl?`<img class="player-card-image" src="${esc(p.imageUrl)}" alt="Cartinha de ${esc(p.name)}" loading="lazy">`:'<div class="player-avatar" aria-label="Sem imagem">♟</div>';const earnedBadge=fstPlayerBadgeHTML(p);return `<article class="player-card"><div class="player-card-topline"><div><div class="player-rating">${Number(p.rating)||0}</div><div class="player-position">${esc(p.position)}</div></div><div class="player-card-badge-slot">${earnedBadge}</div></div>${image}<div><div class="player-name">${esc(p.name)}</div><div class="player-actions"><button class="btn" onclick="playerHistory(${p.id})">HISTÓRICO</button><button class="btn" onclick="editPlayer(${p.id})">EDITAR</button><button class="btn" onclick="deleteItem('players',${p.id})">EXCLUIR</button></div></div></article>`}
+function playerHTML(p){const image=p.imageUrl?`<img class="player-card-image" src="${esc(p.imageUrl)}" alt="Cartinha de ${esc(p.name)}" loading="lazy">`:'<div class="player-avatar" aria-label="Sem imagem">♟</div>';const earnedBadge=fstPlayerBadgeHTML(p);return `<article class="player-card" role="button" tabindex="0" aria-label="Ver perfil completo de ${esc(p.name)}" onclick="viewPlayerDetails(${p.id})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();viewPlayerDetails(${p.id})}"><div class="player-card-topline"><div><div class="player-rating">${Number(p.rating)||0}</div><div class="player-position">${esc(p.position)}</div></div><div class="player-card-badge-slot">${earnedBadge}</div></div>${image}<div><div class="player-name">${esc(p.name)}</div><div class="player-stats"><span>OVR <b>${Number(p.rating)||0}</b></span><span>${esc(p.position||'—')}</span></div><div class="player-actions"><button class="btn" onclick="event.stopPropagation();playerHistory(${p.id})">HISTÓRICO</button><button class="btn" onclick="event.stopPropagation();editPlayer(${p.id})">EDITAR</button><button class="btn" onclick="event.stopPropagation();deleteItem('players',${p.id})">EXCLUIR</button></div></div></article>`}
 function statFromText(text,name){if(!text)return 0;let total=0;String(text).split(',').forEach(part=>{part=part.trim();const m=part.match(/^(.*?)\s+(\d+)\s*$/);if(m&&m[1].trim().toLocaleLowerCase('pt-BR')===name.toLocaleLowerCase('pt-BR'))total+=Number(m[2])||0});return total}
+
+function viewPlayerDetails(id){
+ const p=data.players.find(x=>String(x.id)===String(id));if(!p)return;
+ const norm=n=>String(n||'').toLocaleLowerCase('pt-BR');
+ const playerMatches=[...data.matches].filter(m=>statFromText(m.scorers,p.name)>0||statFromText(m.assists,p.name)>0||norm(m.mvp)===norm(p.name)||(m.playerAppearances||[]).some(n=>norm(n)===norm(p.name))).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ const goals=data.matches.reduce((s,m)=>s+statFromText(m.scorers,p.name),0);
+ const assists=data.matches.reduce((s,m)=>s+statFromText(m.assists,p.name),0);
+ const mvps=data.matches.filter(m=>norm(m.mvp)===norm(p.name)).length;
+ const appearances=Math.max(Number(p.appearancesManual)||0,playerMatches.length);
+ const yellows=Number(p.yellowCards)||0,reds=Number(p.redCards)||0;
+ const titles=Array.isArray(p.titles)?p.titles:[];
+ const clubMatches=data.matches.filter(m=>playerMatches.includes(m));
+ const wins=clubMatches.filter(m=>Number(m.our)>Number(m.their)).length;
+ const losses=clubMatches.filter(m=>Number(m.our)<Number(m.their)).length;
+ const draws=clubMatches.length-wins-losses;
+ const image=p.imageUrl?`<img src="${esc(p.imageUrl)}" alt="Carta de ${esc(p.name)}">`:'<div class="ut-silhouette">♟</div>';
+ const info=(label,value)=>`<div class="ut-player-info-row"><span>${label}</span><b>${value}</b></div>`;
+ const stat=(label,value)=>`<div class="ut-player-statline"><span>${label}</span><i><b style="width:${Math.max(0,Math.min(100,Number(value)||0))}%"></b></i><strong>${Number(value)||0}</strong></div>`;
+ const recent=playerMatches.length?playerMatches.slice(0,6).map(m=>`<div class="ut-player-match"><div><strong>${esc(data.settings.clubName||'FUTURE STARS FC')} × ${esc(m.opponent||'Adversário')}</strong><small>${esc(m.date||'Data não informada')} · ${esc(m.competition||'Amistoso')}${m.round?' · '+esc(m.round):''}</small><small>⚽ ${statFromText(m.scorers,p.name)} gol(s) · 🅰 ${statFromText(m.assists,p.name)} assistência(s)${norm(m.mvp)===norm(p.name)?' · ⭐ MVP':''}</small></div><b>${Number(m.our)||0} – ${Number(m.their)||0}</b></div>`).join(''):'<div class="empty">Ainda não há partidas vinculadas a este jogador. Registre gols, assistências ou MVP para alimentar o perfil.</div>';
+ document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal ut-player-modal" role="dialog" aria-modal="true" aria-label="Perfil de ${esc(p.name)}"><div class="ut-player-top"><div class="ut-player-hero"><div class="ut-player-card-art"><div class="ut-rating">${Number(p.rating)||0}</div><div class="ut-pos">${esc(p.position||'JOGADOR')}</div>${image}<div class="ut-name">${esc(p.name)}</div></div><div class="ut-player-country">${esc(p.countryCode||'Nacionalidade não informada')} · FUTURE STARS FC</div></div><div class="ut-player-overview"><div class="ut-player-modal-head"><div><div class="eyebrow">PLAYER PROFILE / FUTURE STARS FC</div><h2>${esc(p.name)}</h2><p>Informações e desempenho do jogador no clube</p></div><button class="btn" onclick="closeModal()">FECHAR ×</button></div><div class="ut-player-tags"><span class="ut-player-tag">OVR ${Number(p.rating)||0}</span><span class="ut-player-tag">${esc(p.position||'Posição não informada')}</span><span class="ut-player-tag">${titles.length} conquista(s)</span><span class="ut-player-tag">${mvps} MVP</span></div><div class="ut-player-kpis"><div class="ut-player-kpi"><small>PARTIDAS</small><strong>${appearances}</strong><em>participações registradas</em></div><div class="ut-player-kpi"><small>GOLS</small><strong>${goals}</strong><em>no histórico do clube</em></div><div class="ut-player-kpi"><small>ASSISTÊNCIAS</small><strong>${assists}</strong><em>no histórico do clube</em></div><div class="ut-player-kpi"><small>MVP</small><strong>${mvps}</strong><em>prêmios individuais</em></div></div></div></div><div class="ut-player-body"><section class="ut-player-panel"><h3>📋 Informações do jogador</h3>${info('Nome',esc(p.name))}${info('Posição',esc(p.position||'—'))}${info('Overall',String(Number(p.rating)||0))}${info('País / código',esc(p.countryCode||'Não informado'))}${info('Clube',esc(data.settings.clubName||'FUTURE STARS FC'))}${info('Conquistas',String(titles.length))}${info('Cartões amarelos',String(yellows))}${info('Cartões vermelhos',String(reds))}</section><section class="ut-player-panel"><h3>📈 Desempenho no clube</h3>${stat('Gols',goals)}${stat('Assistências',assists)}${stat('MVP',mvps)}${stat('Vitórias*',wins)}${stat('Empates*',draws)}${stat('Derrotas*',losses)}<p style="font-size:9px;color:#8d9a91;margin:10px 0 0">*Resultados das partidas com participação individual registrada.</p></section><section class="ut-player-panel"><h3>🏆 Conquistas e prêmios</h3>${titles.length?titles.map(t=>`<div class="ut-player-info-row"><span>🏆 ${esc(t.type||'Conquista')}</span><b>${esc(t.name||t)}${t.season?' · '+esc(t.season):''}</b></div>`).join(''):'<div class="empty">Nenhuma conquista cadastrada ainda.</div>'}<div style="margin-top:12px"><button class="btn primary" onclick="addPlayerTitle(${p.id});">＋ ADICIONAR CONQUISTA</button></div></section><section class="ut-player-panel"><h3>🗓️ Últimas partidas</h3><div class="ut-player-recent">${recent}</div><div style="margin-top:12px"><button class="btn" onclick="playerHistory(${p.id})">ABRIR HISTÓRICO COMPLETO ↗</button></div></section></div><div class="ut-player-modal-foot"><button class="btn" onclick="editPlayer(${p.id})">EDITAR JOGADOR</button><button class="btn primary" onclick="closeModal()">CONCLUÍDO</button></div></div></div>`;
+}
+
 function playerHistory(id){
  const p=data.players.find(x=>x.id===id);if(!p)return;
  const matches=[...data.matches].filter(m=>statFromText(m.scorers,p.name)>0||statFromText(m.assists,p.name)>0||String(m.mvp||'').toLocaleLowerCase('pt-BR')===p.name.toLocaleLowerCase('pt-BR')||(m.playerAppearances||[]).includes(p.name)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
