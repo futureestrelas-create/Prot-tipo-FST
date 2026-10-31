@@ -833,10 +833,51 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
 .fst-clip-overlay:hover{filter:brightness(1.15);transform:translateY(-1px)}
 .fst-clip-kick{background:rgba(35,115,30,.96)}
 
+
+/* V21 — painel unificado e compacto */
+.fst-stream-compact{margin:8px 0 14px;padding:14px 16px;border:1px solid #343943;border-radius:14px;background:linear-gradient(135deg,#17191f,#0d0f13);color:#f5f5f7}
+.fst-stream-compact-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.fst-stream-compact-head>div:first-child{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fst-stream-live-dot{width:8px;height:8px;border-radius:50%;background:#e9102b;box-shadow:0 0 10px #e9102b}
+.fst-stream-compact-head strong{font-size:12px;letter-spacing:.12em}
+.fst-stream-compact-head small{color:#969dab;font-size:12px;margin-left:4px}
+.fst-stream-platforms{display:flex;gap:5px;padding:4px;background:#090a0d;border:1px solid #2e323a;border-radius:10px}
+.fst-platform-btn{border:0;border-radius:7px;padding:7px 12px;background:transparent;color:#b7bdc8;font-weight:800;cursor:pointer}
+.fst-platform-btn.active{background:#e9102b;color:#fff}
+.fst-platform-btn[data-platform="kick"].active{background:#53b848;color:#081006}
+.fst-stream-compact-controls{display:flex;gap:8px}
+.fst-stream-compact-controls input{min-width:0;flex:1;background:#090a0d;border:1px solid #363b45;border-radius:9px;padding:11px 13px;color:#fff;outline:none}
+.fst-stream-compact-controls button{border:0;border-radius:9px;background:#e9102b;color:#fff;font-weight:900;font-size:11px;padding:0 15px;cursor:pointer}
+.fst-stream-compact-hint{margin-top:8px;color:#858d9b;font-size:11px}
+.fst-stream-compact .fst-stream-player-small{width:100%;max-width:760px;margin:12px auto 0}
+.fst-stream-compact iframe{width:100%;height:360px;max-height:48vh;border:0;border-radius:10px}
+@media(max-width:600px){.fst-stream-compact-head{align-items:flex-start;flex-direction:column}.fst-stream-compact-controls button{padding:0 10px}.fst-stream-compact iframe{height:220px}}
+/* Esconde os formulários duplicados e deixa o novo controle único no dashboard. */
+
+
+#dashTwitchChannel,#dashTwitchChannel~button,#dashKickChannel,#dashKickChannel~button{display:none!important}
+
 </style>
 
 </head>
 <body>
+
+<section class="fst-stream-compact" id="fstStreamCompact">
+  <div class="fst-stream-compact-head">
+    <div><span class="fst-stream-live-dot"></span><strong>STREAM CENTER</strong><small>Assista sem sair do clube</small></div>
+    <div class="fst-stream-platforms" role="group" aria-label="Plataforma">
+      <button type="button" class="fst-platform-btn active" data-platform="twitch">Twitch</button>
+      <button type="button" class="fst-platform-btn" data-platform="kick">Kick</button>
+    </div>
+  </div>
+  <div class="fst-stream-compact-controls">
+    <input id="fstCompactChannel" type="text" autocomplete="off" placeholder="Nome do canal (ex.: seuusuario)" aria-label="Nome do canal">
+    <button type="button" id="fstCompactLoad">CARREGAR LIVE</button>
+  </div>
+  <div class="fst-stream-compact-hint" id="fstCompactHint">Escolha a plataforma, informe o canal e carregue a live.</div>
+</section>
+
+
 <div class="auth-gate" id="authGate">
   <div class="auth-card">
     <div class="brand fst-brand" aria-label="Future Stars FC">
@@ -1540,6 +1581,38 @@ render();
  const timeEl=document.getElementById('fstLiveTime'),dateEl=document.getElementById('fstLiveDate');
  function tick(){const now=new Date();if(timeEl)timeEl.textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);if(dateEl)dateEl.textContent=new Intl.DateTimeFormat('pt-BR',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}).format(now).replace(/\./g,'');}
  tick();setInterval(tick,1000);
+})();
+</script>
+
+
+<script>
+(function(){
+ const root=document.getElementById('fstStreamCompact'); if(!root)return;
+ let platform='twitch';
+ const $=id=>document.getElementById(id);
+ function setPlatform(p){
+   platform=p;
+   root.querySelectorAll('[data-platform]').forEach(b=>b.classList.toggle('active',b.dataset.platform===p));
+   $('fstCompactHint').textContent=p==='twitch'?'Twitch selecionada. Digite o usuário do canal.':'Kick selecionada. Digite o nome do canal.';
+   $('fstCompactChannel').placeholder=p==='twitch'?'Nome do canal da Twitch':'Nome do canal da Kick';
+ }
+ root.querySelectorAll('[data-platform]').forEach(b=>b.addEventListener('click',()=>setPlatform(b.dataset.platform)));
+ $('fstCompactLoad').addEventListener('click',()=>{
+   const channel=$('fstCompactChannel').value.trim().replace(/^@/,'');
+   if(!channel){$('fstCompactHint').textContent='Digite o nome do canal primeiro.';return;}
+   if(platform==='twitch'){
+     const input=$('dashTwitchChannel');
+     if(input)input.value=channel;
+     const btn=document.querySelector('[data-action="load-twitch-dashboard"]');
+     if(btn)btn.click(); else { $('fstCompactHint').textContent='Não encontrei o controle de carregamento da Twitch nesta versão.'; return; }
+   }else{
+     const input=$('dashKickChannel');
+     if(input)input.value=channel;
+     const btn=document.querySelector('[data-action="load-kick-dashboard"]');
+     if(btn)btn.click(); else { $('fstCompactHint').textContent='Não encontrei o controle de carregamento da Kick nesta versão.'; return; }
+   }
+   $('fstCompactHint').textContent='Solicitação enviada. Se o player não carregar, confira se o canal está ao vivo e se a plataforma permite incorporação.';
+ });
 })();
 </script>
 
