@@ -678,6 +678,52 @@ body{background:#08090b!important;color:var(--fst-text)}
  .fst-overview-actions .btn{font-size:10px;padding:10px 11px}
 }
 
+
+/* V9: secondary club statistics grouped directly under the main overview */
+#page-dashboard .dash-insights{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:12px 0 18px;
+}
+#page-dashboard .dash-mini{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px 16px;
+  background:linear-gradient(145deg,#151619,#101114)!important;
+  border:1px solid #34363b!important;
+  border-radius:13px;
+  box-shadow:0 8px 22px #00000020;
+  transition:transform .18s ease,border-color .18s ease;
+}
+#page-dashboard .dash-mini:hover{transform:translateY(-2px);border-color:#777980!important}
+#page-dashboard .dash-mini-icon{
+  display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;
+  border-radius:12px;background:#26272b!important;color:#f3f3f4!important;
+  font-size:19px;font-weight:800;
+}
+#page-dashboard .dash-mini small{
+  display:block;color:#a6a7ad!important;font-size:9px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px;
+}
+#page-dashboard .dash-mini strong{
+  display:block;color:#f5f5f6!important;font-size:25px;line-height:1.05;font-weight:900;
+  font-variant-numeric:tabular-nums;
+}
+#page-dashboard .dash-mini em{
+  display:block;color:#92939a!important;font-size:10px;font-style:normal;margin-top:5px;
+}
+@media(max-width:900px){#page-dashboard .dash-insights{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){
+ #page-dashboard .dash-insights{gap:8px}
+ #page-dashboard .dash-mini{padding:11px 10px;gap:8px}
+ #page-dashboard .dash-mini-icon{width:32px;height:32px;flex-basis:32px;border-radius:9px;font-size:16px}
+ #page-dashboard .dash-mini strong{font-size:21px}
+ #page-dashboard .dash-mini em{font-size:9px}
+}
+
 </style>
 
 <style id="fst-minimal-header-layout">
@@ -808,6 +854,12 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
     <div class="stat"><div class="stat-top">GOLS MARCADOS <span class="stat-icon">◎</span></div><strong id="statGoals">0</strong><small>Somatório das partidas</small></div>
     <div class="stat"><div class="stat-top">JOGADORES <span class="stat-icon">♟</span></div><strong id="statPlayers">0</strong><small>Atletas cadastrados</small></div>
   </div>
+  <section class="dash-insights">
+    <div class="dash-mini"><span class="dash-mini-icon">◉</span><div><small>EMPATES</small><strong id="dashDraws">0</strong><em>jogos equilibrados</em></div></div>
+    <div class="dash-mini"><span class="dash-mini-icon">⌁</span><div><small>DERROTAS</small><strong id="dashLosses">0</strong><em>em todo o histórico</em></div></div>
+    <div class="dash-mini"><span class="dash-mini-icon">◎</span><div><small>GOLS SOFRIDOS</small><strong id="dashConceded">0</strong><em id="dashGoalDiff">Saldo: 0</em></div></div>
+    <div class="dash-mini"><span class="dash-mini-icon">♜</span><div><small>APROVEITAMENTO</small><strong id="dashPointsRate">0%</strong><em>vitórias por partida</em></div></div>
+  </section>
   <div class="dash-v2-grid">
     <section class="dash-v2-card" aria-live="polite">
       <div class="dash-v2-kicker">◆ Central da temporada</div>
@@ -841,12 +893,7 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
       <div id="dashV2Achievements"><div class="dash-v2-empty">Continue registrando partidas para construir seu legado.</div></div>
     </section>
   </div>
-  <section class="dash-insights">
-    <div class="dash-mini"><span class="dash-mini-icon">◉</span><div><small>EMPATES</small><strong id="dashDraws">0</strong><em>jogos equilibrados</em></div></div>
-    <div class="dash-mini"><span class="dash-mini-icon">⌁</span><div><small>DERROTAS</small><strong id="dashLosses">0</strong><em>em todo o histórico</em></div></div>
-    <div class="dash-mini"><span class="dash-mini-icon">◎</span><div><small>GOLS SOFRIDOS</small><strong id="dashConceded">0</strong><em id="dashGoalDiff">Saldo: 0</em></div></div>
-    <div class="dash-mini"><span class="dash-mini-icon">♜</span><div><small>APROVEITAMENTO</small><strong id="dashPointsRate">0%</strong><em>vitórias por partida</em></div></div>
-  </section>
+
   <section id="dashAchievementNews" class="panel achievement-news-panel hidden" aria-live="polite"><div class="section-head"><div><span class="eyebrow">CLUB NEWS</span><h2>🏅 Conquistas recentes</h2><p>Novas marcas alcançadas pelo clube e seus jogadores</p></div><button class="btn" data-go="badges">VER TODAS ↗</button></div><div id="dashAchievementFeed" class="achievement-feed"></div></section>
   <div class="dash-lower-grid">
     <section class="panel dash-panel"><div class="section-head"><div><span class="eyebrow">PERFORMANCE</span><h2>Forma recente</h2><p>Últimos 6 resultados registrados</p></div><span class="pill">AO VIVO</span></div><div id="dashForm" class="dash-form"><div class="empty">Registre partidas para acompanhar a forma.</div></div><div class="dash-form-legend"><span><i class="form-dot win"></i> Vitória</span><span><i class="form-dot draw"></i> Empate</span><span><i class="form-dot loss"></i> Derrota</span></div></section>
