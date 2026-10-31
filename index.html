@@ -930,29 +930,9 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
 @media(max-width:480px){.fst-login-card{padding:24px 20px 0}.fst-login-footer{margin:0 -20px}}
 
 
-/* V26 — importação gratuita de prints para partidas */
-.fst-ai-import{margin:0 0 16px;padding:14px;border:1px solid #49303a;border-left:3px solid #e9102b;border-radius:11px;background:linear-gradient(120deg,#1a1117,#101217)}
-.fst-ai-import-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.fst-ai-import-head span{font-size:12px;font-weight:950;letter-spacing:.09em;color:#ff5268}
-.fst-ai-import-head small,.fst-ai-upload-grid small{font-size:10px;color:#9ca3b1}
-.fst-ai-upload-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.fst-ai-upload-grid input{display:block;width:100%;min-width:0;margin-top:6px;font-size:11px;color:#cbd0db}
-#fstReadScreenshots{margin-top:12px}
-.fst-ai-status{font-size:11px;color:#b9bfcc;margin-top:8px;line-height:1.5}
-.fst-ai-review{margin-top:10px;font-size:11px;color:#cbd0db}
-.fst-ai-review textarea{box-sizing:border-box;background:#0b0d11;color:#fff;border:1px solid #343944;border-radius:8px;padding:10px}
-@media(max-width:560px){.fst-ai-upload-grid{grid-template-columns:1fr}}
-
-
-/* V27 — OCR com pré-processamento e campos estruturados de estatísticas */
-.fst-match-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:10px 0}
-.fst-match-stats-grid>div label{display:block;font-size:10px;color:var(--muted);margin-bottom:5px}
-.fst-match-stats-grid input{width:100%;box-sizing:border-box}
-@media(max-width:760px){.fst-match-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
 
@@ -1665,28 +1645,7 @@ renderAdvancedStats(ms);renderBadgeUI();
 const clubNameInput=document.getElementById('clubName');if(clubNameInput)clubNameInput.value=data.settings.clubName||'FUTURE STARS FC';const seasonNameInput=document.getElementById('seasonName');if(seasonNameInput)seasonNameInput.value=data.settings.seasonName||'Temporada 01 · 2026';const brandClubLabel=document.querySelector('.brand div:nth-child(2)');if(brandClubLabel)brandClubLabel.innerHTML=esc(data.settings.clubName||'FUTURE STARS FC')+' <small>FOOTBALL CLUB · MANAGER</small>';const seasonLabel=document.querySelector('.season');if(seasonLabel)seasonLabel.innerHTML=esc(data.settings.seasonName||'Temporada 01 · 2026')}
 ['statsSeasonFilter','statsCompetitionFilter','statsPositionFilter'].forEach(id=>document.addEventListener('change',e=>{if(e.target&&e.target.id===id&&data)renderAdvancedStats([...data.matches].sort((a,b)=>(b.date||'').localeCompare(a.date||'')))}));
 document.getElementById('exportStatsCsv')?.addEventListener('click',()=>{const rows=[['Jogador','Posição','Overall','País','Gols','Assistências','G+A','MVP','Participações']];data.players.forEach(p=>{let g=0,a=0,mvp=0,apps=0;data.matches.forEach(m=>{const gg=statFromText(m.scorers,p.name),aa=statFromText(m.assists,p.name);g+=gg;a+=aa;if((m.mvp||'').toLocaleLowerCase('pt-BR')===p.name.toLocaleLowerCase('pt-BR'))mvp++;if(gg||aa||(m.mvp||'').toLocaleLowerCase('pt-BR')===p.name.toLocaleLowerCase('pt-BR'))apps++});rows.push([p.name,p.position,p.rating,fstCountryName(p.countryCode||FST_KNOWN_COUNTRIES[String(p.name||'').trim().toLocaleLowerCase('pt-BR')]||'OTHER'),g,a,g+a,mvp,apps])});const csv='\\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(';')).join('\\r\\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));const a=document.createElement('a');a.href=url;a.download='future-stars-estatisticas.csv';a.click();URL.revokeObjectURL(url)});
-function openModal(type){let title='',fields='';if(type==='add-match'){title='Registrar partida';fields=`<div class="fst-ai-import">
-  <div class="fst-ai-import-head"><span>✦ FST AI MATCH IMPORT</span><small>Leitor gratuito de prints · OCR no navegador</small></div>
-  <div class="fst-ai-upload-grid">
-    <div class="field"><label>Print do resultado (placar e autores dos gols)</label><input type="file" id="fstResultScreenshot" accept="image/*"><small>Envie a tela final da partida.</small></div>
-    <div class="field"><label>Print das estatísticas</label><input type="file" id="fstStatsScreenshot" accept="image/*"><small>Envie a tela de estatísticas do jogo.</small></div>
-  </div>
-  <button type="button" class="btn" id="fstReadScreenshots">✦ LER PRINTS E PREENCHER</button>
-  <div id="fstOcrStatus" class="fst-ai-status" role="status">A leitura é gratuita. Confira todos os campos antes de salvar.</div>
-  <details class="fst-ai-review"><summary>Conferir texto identificado</summary><textarea id="fstOcrText" rows="6" placeholder="O texto extraído dos prints aparecerá aqui." style="width:100%;margin-top:8px"></textarea></details>
-</div>
-<div class="form-grid"><div class="field"><label>Adversário / dupla</label><input name="opponent" required placeholder="Ex.: Time do Lucas"></div><div class="field"><label>Data</label><input name="date" type="date" required value="${new Date().toISOString().slice(0,10)}"></div><div class="field"><label>Gols FUTURE STARS</label><input name="our" type="number" min="0" max="99" required value="0"></div><div class="field"><label>Gols adversário</label><input name="their" type="number" min="0" max="99" required value="0"></div><div class="field"><label>Competição</label><select name="competition"><option>Amistoso</option>${data.competitions.map(c=>`<option>${esc(c.name)}</option>`).join('')}</select></div><div class="field"><label>Fase / rodada (opcional)</label><input name="round" placeholder="Ex.: Semifinal, Rodada 2"></div><div class="field" style="grid-column:1/-1"><label>Artilheiros e gols (opcional)</label><div id="scorerRows"></div><button type="button" class="btn" id="addScorerRow" style="margin-top:7px">＋ Adicionar artilheiro</button><small style="color:var(--muted)">Selecione jogadores cadastrados no elenco e informe quantos gols fizeram.</small></div><div class="field" style="grid-column:1/-1"><label>Assistências (opcional)</label><div id="assistRows"></div><button type="button" class="btn" id="addAssistRow" style="margin-top:7px">＋ Adicionar assistência</button><small style="color:var(--muted)">Selecione o jogador do elenco e a quantidade de assistências.</small></div>
-<div class="field" style="grid-column:1/-1"><label>📊 Estatísticas da partida (preenchidas pela leitura, revise antes de salvar)</label>
-<div class="fst-match-stats-grid">
-<div><label>Posse FUTURE STARS (%)</label><input name="statPossession" type="number" min="0" max="100" placeholder="%"></div>
-<div><label>Posse adversário (%)</label><input name="statOppPossession" type="number" min="0" max="100" placeholder="%"></div>
-<div><label>Finalizações FST</label><input name="statShots" type="number" min="0" placeholder="—"></div>
-<div><label>Finalizações adversário</label><input name="statOppShots" type="number" min="0" placeholder="—"></div>
-<div><label>Chutes no gol FST</label><input name="statOnTarget" type="number" min="0" placeholder="—"></div>
-<div><label>Chutes no gol adversário</label><input name="statOppOnTarget" type="number" min="0" placeholder="—"></div>
-<div><label>Precisão de passes FST (%)</label><input name="statPassAccuracy" type="number" min="0" max="100" placeholder="%"></div>
-<div><label>Precisão de passes adversário (%)</label><input name="statOppPassAccuracy" type="number" min="0" max="100" placeholder="%"></div>
-</div><small>Se o print não mostrar uma estatística com clareza, o campo ficará vazio em vez de inventar um número.</small></div>
+function openModal(type){let title='',fields='';if(type==='add-match'){title='Registrar partida';fields=`<div class="form-grid"><div class="field"><label>Adversário / dupla</label><input name="opponent" required placeholder="Ex.: Time do Lucas"></div><div class="field"><label>Data</label><input name="date" type="date" required value="${new Date().toISOString().slice(0,10)}"></div><div class="field"><label>Gols FUTURE STARS</label><input name="our" type="number" min="0" max="99" required value="0"></div><div class="field"><label>Gols adversário</label><input name="their" type="number" min="0" max="99" required value="0"></div><div class="field"><label>Competição</label><select name="competition"><option>Amistoso</option>${data.competitions.map(c=>`<option>${esc(c.name)}</option>`).join('')}</select></div><div class="field"><label>Fase / rodada (opcional)</label><input name="round" placeholder="Ex.: Semifinal, Rodada 2"></div><div class="field" style="grid-column:1/-1"><label>Artilheiros e gols (opcional)</label><div id="scorerRows"></div><button type="button" class="btn" id="addScorerRow" style="margin-top:7px">＋ Adicionar artilheiro</button><small style="color:var(--muted)">Selecione jogadores cadastrados no elenco e informe quantos gols fizeram.</small></div><div class="field" style="grid-column:1/-1"><label>Assistências (opcional)</label><div id="assistRows"></div><button type="button" class="btn" id="addAssistRow" style="margin-top:7px">＋ Adicionar assistência</button><small style="color:var(--muted)">Selecione o jogador do elenco e a quantidade de assistências.</small></div>
 <div class="field" style="grid-column:1/-1"><label>⭐ MVP da partida</label><select name="mvp"><option value="">Sem MVP definido</option>${data.players.map(p=>`<option value="${esc(p.name)}">${esc(p.name)} · ${esc(p.position||'')}</option>`).join('')}</select><small style="color:var(--muted)">Escolha o melhor jogador desta partida. O prêmio entra automaticamente no histórico individual.</small></div></div><div class="field"><label>Observações (opcional)</label><input name="notes" placeholder="Ex.: jogo 1 da série"></div>`}
 if(type==='add-player'||type==='edit-player'){const editing=type==='edit-player'?data.players.find(p=>p.id===window.FST_EDIT_PLAYER_ID):null;title=editing?'Editar jogador':'Adicionar jogador';fields=`<div class="field"><label>Nome do jogador</label><input name="name" required maxlength="70" placeholder="Nome ou apelido" value="${esc(editing?.name||'')}"></div><div class="form-grid"><div class="field"><label>Posição</label><select name="position">${['ATA','PE','PD','MEI','MC','VOL','ME','MD','ZAG','LE','LD','GOL'].map(x=>`<option ${((editing?.position||'ATA')===x)?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>Overall (1–99)</label><input name="rating" type="number" min="1" max="99" value="${Number(editing?.rating)||80}" required></div></div><div class="field"><label>País / nacionalidade</label><div class="country-select-wrap"><span class="country-preview" id="countryPreview">${fstCountryFlagHTML(editing?.countryCode||FST_KNOWN_COUNTRIES[String(editing?.name||'').trim().toLocaleLowerCase('pt-BR')]||'OTHER')}</span><select name="countryCode" id="playerCountrySelect" required>${fstCountryOptions(editing?.countryCode||FST_KNOWN_COUNTRIES[String(editing?.name||'').trim().toLocaleLowerCase('pt-BR')]||'OTHER')}</select></div><small style="color:var(--muted)">A bandeira aparecerá no ranking de estatísticas individuais.</small></div><div class="field"><label>Imagem da cartinha (JPG/PNG/WEBP)</label><input name="cardImage" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"><small style="color:#9298a5">Máximo recomendado: 2 MB. ${editing?.imageUrl?'Selecione uma nova imagem para substituir a atual.':'A imagem será compartilhada com o outro usuário.'}</small>${editing?.imageUrl?`<img src="${esc(editing.imageUrl)}" alt="Cartinha atual" style="display:block;max-width:140px;max-height:190px;object-fit:contain;margin-top:8px">`:''}</div>`}
 if(type==='add-competition'){title='Criar competição';fields=`<div class="field"><label>Nome</label><input name="name" required placeholder="Ex.: Copa FUTURE STARS"></div><div class="form-grid"><div class="field"><label>Tipo</label><select name="type"><option>Copa</option><option>Liga</option><option>Temporada</option><option>Amistosos</option></select></div><div class="field"><label>Formato</label><select name="format"><option value="knockout">Copa — mata-mata</option><option value="league">Liga — pontos corridos</option><option value="free">Livre / amistosos</option></select></div><div class="field"><label>Status</label><select name="status"><option>Planejada</option><option>Em andamento</option><option>Concluída</option></select></div></div><div class="field"><label>Participantes (separe por vírgula)</label><textarea name="participants" rows="2" placeholder="FUTURE STARS FC, Time do Lucas, ..." style="width:100%;background:#0b0d11;border:1px solid #343944;border-radius:9px;padding:11px;color:#fff"></textarea></div><div class="field"><label>Descrição / regras</label><input name="description" placeholder="Ex.: semifinal e final em jogo único"></div>`}
@@ -1698,119 +1657,10 @@ if(type==='add-match'){
  
 document.getElementById('addScorerRow').onclick=()=>addStatRow('scorer');document.getElementById('addAssistRow').onclick=()=>addStatRow('assist');
 
-const readBtn=document.getElementById('fstReadScreenshots');
-if(readBtn){
- const status=document.getElementById('fstOcrStatus'), output=document.getElementById('fstOcrText');
- const setField=(name,value)=>{const el=document.querySelector('#dataForm [name="'+name+'"]');if(el&&value!==null&&value!==undefined&&value!==''){el.value=String(value);el.dispatchEvent(new Event('input',{bubbles:true}));}};
- const prepImage=async(file,mode)=>{
-   const img=await createImageBitmap(file);
-   const scale=Math.min(3,Math.max(2,1800/Math.max(img.width,img.height)));
-   const canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);
-   const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,canvas.width,canvas.height);
-   if(mode!=='color'){
-     const im=ctx.getImageData(0,0,canvas.width,canvas.height),d=im.data;
-     for(let i=0;i<d.length;i+=4){
-       let v=(0.299*d[i]+0.587*d[i+1]+0.114*d[i+2]);
-       if(mode==='threshold')v=v>150?255:0;
-       else v=Math.max(0,Math.min(255,(v-128)*1.65+128));
-       d[i]=d[i+1]=d[i+2]=v;
-     }
-     ctx.putImageData(im,0,0);
-   }
-   return canvas;
- };
- const recognizeBetter=async(file,label)=>{
-   const attempts=[];
-   for(const mode of ['contrast','threshold']){
-     status.textContent='Melhorando imagem e lendo '+label+'…';
-     const canvas=await prepImage(file,mode);
-     const r=await Tesseract.recognize(canvas,'eng',{logger:m=>{if(m.status==='recognizing text')status.textContent='Lendo '+label+'… '+Math.round((m.progress||0)*100)+'%';},tessedit_pageseg_mode:'11'});
-     attempts.push(r.data);
-   }
-   attempts.sort((a,b)=>(b.confidence||0)-(a.confidence||0));
-   return attempts[0];
- };
- const extractScore=(text)=>{
-   const t=text.replace(/[|]/g,'1').replace(/[Oo]/g,'0').replace(/[Il]/g,'1');
-   const patterns=[
-     /(?:^|\n)\s*(\d{1,2})\s*(?:[-–—:]\s*|\s+v(?:s)?\.?\s*)(\d{1,2})(?:\s*(?:FT|HT|FINAL|FIM))?/im,
-     /\b(\d{1,2})\s*[-–—:]\s*(\d{1,2})\b/,
-     /\b(\d{1,2})\s+v(?:s)?\.?\s+(\d{1,2})\b/i
-   ];
-   for(const p of patterns){const m=t.match(p);if(m)return [Number(m[1]),Number(m[2])];}
-   return null;
- };
- const extractPercentages=(text)=>{
-   const out=[]; const re=/(\d{1,3})\s*%/g;let m;
-   while((m=re.exec(text))!==null){const n=Number(m[1]);if(n<=100)out.push(n);}
-   return out;
- };
- const extractStatPair=(text,terms)=>{
-   const lines=text.split(/\n/).map(s=>s.trim()).filter(Boolean);
-   for(const line of lines){
-     const low=line.toLowerCase();
-     if(terms.some(t=>low.includes(t))){
-       const nums=(line.match(/\b\d{1,3}(?:[.,]\d+)?\s*%?/g)||[]).map(x=>Number(x.replace('%','').replace(',','.'))).filter(Number.isFinite);
-       if(nums.length>=2)return nums.slice(-2);
-     }
-   }
-   return null;
- };
- readBtn.onclick=async()=>{
-  const resultFile=document.getElementById('fstResultScreenshot')?.files?.[0];
-  const statsFile=document.getElementById('fstStatsScreenshot')?.files?.[0];
-  if(!resultFile&&!statsFile){status.textContent='Anexe pelo menos um print antes de iniciar.';return;}
-  if(!window.Tesseract){status.textContent='O leitor OCR não carregou. Confira sua conexão e atualize a página.';return;}
-  readBtn.disabled=true;let pieces=[];
-  try{
-   if(resultFile){
-     const r=await recognizeBetter(resultFile,'tela do resultado');
-     pieces.push('[RESULTADO]\n'+(r.text||''));
-   }
-   if(statsFile){
-     const r=await recognizeBetter(statsFile,'tela de estatísticas');
-     pieces.push('[ESTATÍSTICAS]\n'+(r.text||''));
-   }
-   const full=pieces.join('\n\n');output.value=full;
-   const resultText=pieces.find(x=>x.startsWith('[RESULTADO]'))||'';
-   const statsText=pieces.find(x=>x.startsWith('[ESTATÍSTICAS]'))||'';
-   let filled=[];
-   const score=extractScore(resultText);
-   if(score){
-     // The order in the screenshot is not guaranteed; leave a visible review message.
-     setField('our',score[0]);setField('their',score[1]);filled.push('placar');
-   }
-   // Parse common FC match-stats labels. Only fill values when a label and two numbers appear on one line.
-   const pairMappings=[
-     {terms:['possession','posse'],a:'statPossession',b:'statOppPossession',percent:true},
-     {terms:['shots','finalizações','total shots'],a:'statShots',b:'statOppShots'},
-     {terms:['shots on target','chutes no gol','on target'],a:'statOnTarget',b:'statOppOnTarget'},
-     {terms:['pass accuracy','precisão de passes'],a:'statPassAccuracy',b:'statOppPassAccuracy',percent:true}
-   ];
-   pairMappings.forEach(map=>{
-     const pair=extractStatPair(statsText,map.terms);
-     if(pair&&pair.length===2&&pair.every(n=>n>=0&&(!map.percent||n<=100))){
-       setField(map.a,pair[0]);setField(map.b,pair[1]);filled.push(map.terms[0]);
-     }
-   });
-   // Try to map obvious registered player names to scorer rows, but never guess a goal count.
-   const low=resultText.toLocaleLowerCase('pt-BR');
-   const roster=(data.players||[]).filter(p=>p.name&&low.includes(p.name.toLocaleLowerCase('pt-BR')));
-   const scorerRoot=document.getElementById('scorerRows');
-   if(roster.length===1&&scorerRoot){
-     let row=scorerRoot.querySelector('.scorer-row');
-     if(!row){addStatRow('scorer');row=scorerRoot.querySelector('.scorer-row');}
-     const select=row?.querySelector('.roster-player');if(select)select.value=roster[0].name;
-   }
-   status.textContent='Leitura concluída. Campos preenchidos: '+(filled.length?filled.join(', '):'nenhum campo reconhecido com confiança')+'. Confira o placar, artilheiros e estatísticas antes de salvar. OCR gratuito pode errar; os prints não são enviados a um servidor.';
-  }catch(err){console.error(err);status.textContent='Falha na leitura: '+(err.message||'erro desconhecido');}
-  finally{readBtn.disabled=false;}
- };
-}
 if(data.players.length){addStatRow('scorer');addStatRow('assist')}else{document.getElementById('scorerRows').innerHTML='<small style="color:#ffadb5">Cadastre jogadores no Elenco para selecioná-los aqui.</small>';document.getElementById('assistRows').innerHTML='<small style="color:#ffadb5">Cadastre jogadores no Elenco para selecioná-los aqui.</small>'}
 }
 document.getElementById('playerCountrySelect')?.addEventListener('change',e=>{const preview=document.getElementById('countryPreview');if(preview)preview.innerHTML=fstCountryFlagHTML(e.target.value)});
- document.getElementById('dataForm').onsubmit=async e=>{e.preventDefault();const form=e.target, f=new FormData(form),v=Object.fromEntries(f.entries()),id=Date.now();const submit=form.querySelector('[type="submit"]');submit.disabled=true;try{if(type==='add-match'){const collectStats=(selector)=>[...form.querySelectorAll(selector)].map(row=>{const name=row.querySelector('.roster-player')?.value;const count=Number(row.querySelector('.stat-count')?.value)||1;return name?`${name} ${count}`:''}).filter(Boolean).join(', ');data.matches.push({id,opponent:v.opponent,date:v.date,our:Number(v.our),their:Number(v.their),competition:v.competition,round:v.round||'',scorers:collectStats('.scorer-row'),assists:collectStats('.assist-row'),mvp:v.mvp||'',notes:v.notes||'',stats:{possession:v.statPossession||'',opponentPossession:v.statOppPossession||'',shots:v.statShots||'',opponentShots:v.statOppShots||'',shotsOnTarget:v.statOnTarget||'',opponentShotsOnTarget:v.statOppOnTarget||'',passAccuracy:v.statPassAccuracy||'',opponentPassAccuracy:v.statOppPassAccuracy||''},statsOcrText:document.getElementById('fstOcrText')?.value||''})}if(type==='add-player'||type==='edit-player'){const editing=type==='edit-player'?data.players.find(p=>p.id===window.FST_EDIT_PLAYER_ID):null;const imageFile=form.elements.cardImage?.files?.[0];if(imageFile){if(!/^image\/(jpeg|jpg|png|webp)$/.test(imageFile.type)||imageFile.size>2*1024*1024)throw new Error('Escolha uma imagem JPG, PNG ou WEBP de até 2 MB.');if(!window.FST_UPLOAD_PLAYER_IMAGE)throw new Error('O módulo de armazenamento ainda não carregou. Atualize a página e tente novamente.');const uploaded=await window.FST_UPLOAD_PLAYER_IMAGE(imageFile,editing?.id||id);if(editing){const oldPath=editing.imagePath;editing.name=v.name.trim();editing.position=v.position;editing.rating=Number(v.rating);editing.countryCode=v.countryCode||'OTHER';editing.imageUrl=uploaded.url;editing.imagePath=uploaded.path;if(oldPath&&window.FST_DELETE_PLAYER_IMAGE)await window.FST_DELETE_PLAYER_IMAGE(oldPath).catch(()=>{})}else{data.players.push({id,name:v.name.trim(),position:v.position,rating:Number(v.rating),countryCode:v.countryCode||'OTHER',imageUrl:uploaded.url,imagePath:uploaded.path})}}else if(editing){editing.name=v.name.trim();editing.position=v.position;editing.rating=Number(v.rating);editing.countryCode=v.countryCode||'OTHER'}else{data.players.push({id,name:v.name.trim(),position:v.position,rating:Number(v.rating),countryCode:v.countryCode||'OTHER',imageUrl:'',imagePath:''})}}if(type==='add-competition')data.competitions.push({id,name:v.name,type:v.type,format:v.format||'free',status:v.status,participants:v.participants||'',description:v.description||''});closeModal();save();toast('Salvo com sucesso!')}catch(err){console.error(err);toast(err.message||'Não foi possível salvar.')}finally{if(submit.isConnected)submit.disabled=false}}}
+ document.getElementById('dataForm').onsubmit=async e=>{e.preventDefault();const form=e.target, f=new FormData(form),v=Object.fromEntries(f.entries()),id=Date.now();const submit=form.querySelector('[type="submit"]');submit.disabled=true;try{if(type==='add-match'){const collectStats=(selector)=>[...form.querySelectorAll(selector)].map(row=>{const name=row.querySelector('.roster-player')?.value;const count=Number(row.querySelector('.stat-count')?.value)||1;return name?`${name} ${count}`:''}).filter(Boolean).join(', ');data.matches.push({id,opponent:v.opponent,date:v.date,our:Number(v.our),their:Number(v.their),competition:v.competition,round:v.round||'',scorers:collectStats('.scorer-row'),assists:collectStats('.assist-row'),mvp:v.mvp||'',notes:v.notes||''})}if(type==='add-player'||type==='edit-player'){const editing=type==='edit-player'?data.players.find(p=>p.id===window.FST_EDIT_PLAYER_ID):null;const imageFile=form.elements.cardImage?.files?.[0];if(imageFile){if(!/^image\/(jpeg|jpg|png|webp)$/.test(imageFile.type)||imageFile.size>2*1024*1024)throw new Error('Escolha uma imagem JPG, PNG ou WEBP de até 2 MB.');if(!window.FST_UPLOAD_PLAYER_IMAGE)throw new Error('O módulo de armazenamento ainda não carregou. Atualize a página e tente novamente.');const uploaded=await window.FST_UPLOAD_PLAYER_IMAGE(imageFile,editing?.id||id);if(editing){const oldPath=editing.imagePath;editing.name=v.name.trim();editing.position=v.position;editing.rating=Number(v.rating);editing.countryCode=v.countryCode||'OTHER';editing.imageUrl=uploaded.url;editing.imagePath=uploaded.path;if(oldPath&&window.FST_DELETE_PLAYER_IMAGE)await window.FST_DELETE_PLAYER_IMAGE(oldPath).catch(()=>{})}else{data.players.push({id,name:v.name.trim(),position:v.position,rating:Number(v.rating),countryCode:v.countryCode||'OTHER',imageUrl:uploaded.url,imagePath:uploaded.path})}}else if(editing){editing.name=v.name.trim();editing.position=v.position;editing.rating=Number(v.rating);editing.countryCode=v.countryCode||'OTHER'}else{data.players.push({id,name:v.name.trim(),position:v.position,rating:Number(v.rating),countryCode:v.countryCode||'OTHER',imageUrl:'',imagePath:''})}}if(type==='add-competition')data.competitions.push({id,name:v.name,type:v.type,format:v.format||'free',status:v.status,participants:v.participants||'',description:v.description||''});closeModal();save();toast('Salvo com sucesso!')}catch(err){console.error(err);toast(err.message||'Não foi possível salvar.')}finally{if(submit.isConnected)submit.disabled=false}}}
 function closeModal(){document.getElementById('modalRoot').innerHTML=''}
 function editPlayer(id){window.FST_EDIT_PLAYER_ID=id;openModal('edit-player')}
 async function deleteItem(kind,id){if(!confirm('Tem certeza que deseja excluir este item?'))return;const item=data[kind].find(x=>x.id===id);data[kind]=data[kind].filter(x=>x.id!==id);save();if(kind==='players'&&item?.imagePath&&window.FST_DELETE_PLAYER_IMAGE){try{await window.FST_DELETE_PLAYER_IMAGE(item.imagePath)}catch(err){console.warn('Imagem antiga pode permanecer no Cloudinary:',err)}}toast('Item excluído.')}
