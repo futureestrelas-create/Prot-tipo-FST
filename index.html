@@ -633,6 +633,51 @@ body{background:#08090b!important;color:var(--fst-text)}
  .fst-redbull-mark .fst-user-redbull{width:58px!important;max-height:26px!important}
 }
 
+
+/* V8 — dashboard combinado A+B+D: central de gestão, confrontos e atividade */
+.fst-club-overview{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  min-height:112px;margin:0 0 18px;padding:22px 25px;
+  border:1px solid #303137;border-radius:14px;
+  background:linear-gradient(105deg,#111216 0%,#15161a 58%,#101115 100%);
+}
+.fst-club-overview:before{
+  content:"";position:absolute;z-index:-1;right:0;top:0;bottom:0;width:38%;
+  background:linear-gradient(115deg,transparent 0 28%,#e51d2a0b 28% 29%,transparent 29% 48%,#ffffff04 48% 49%,transparent 49%);
+  pointer-events:none;
+}
+.fst-club-overview:after{
+  content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;
+  border-radius:0 3px 3px 0;background:#e51d2a;
+}
+.fst-overview-main{position:relative;z-index:1;min-width:0}
+.fst-overview-kicker{display:flex;align-items:center;gap:8px;color:#b6b7be;font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+.fst-live-dot{width:7px;height:7px;display:inline-block;border-radius:50%;background:#e51d2a;box-shadow:0 0 10px #e51d2a66}
+.fst-overview-separator{color:#e51d2a}
+.fst-club-overview h1{margin:9px 0 4px;font-size:clamp(22px,2.4vw,30px);line-height:1.05;letter-spacing:-.045em;font-weight:950;color:#f6f6f7}
+.fst-club-overview h1 span{color:#9b9ca4;font-weight:650}
+.fst-club-overview p{margin:0;color:#a1a2aa;font-size:12px;line-height:1.5}
+.fst-overview-actions{position:relative;z-index:2;display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap}
+.fst-overview-actions .btn{white-space:nowrap}
+.fst-overview-mark{position:absolute;z-index:-1;right:18px;bottom:-27px;font-size:112px;line-height:1;font-weight:1000;font-style:italic;letter-spacing:-.11em;color:#ffffff04;pointer-events:none;user-select:none}
+#page-dashboard .stats{margin-top:0}
+#page-dashboard .stat{transition:border-color .18s ease,transform .18s ease}
+#page-dashboard .stat:hover{transform:translateY(-2px);border-color:#6a3037}
+#page-dashboard .dash-v2-card,#page-dashboard .dash-v2-squad,#page-dashboard .dash-mini{box-shadow:0 8px 24px #00000014}
+@media(max-width:760px){
+ .fst-club-overview{align-items:flex-start;flex-direction:column;gap:16px;padding:19px 18px}
+ .fst-overview-actions{justify-content:flex-start;width:100%}
+ .fst-overview-actions .btn{flex:1 1 auto}
+ .fst-overview-mark{right:10px;font-size:88px;bottom:-18px}
+}
+@media(max-width:420px){
+ .fst-club-overview{padding:17px 15px}
+ .fst-overview-kicker{font-size:9px;letter-spacing:.11em}
+ .fst-club-overview h1{font-size:23px}
+ .fst-overview-actions .btn{font-size:10px;padding:10px 11px}
+}
+
 </style>
 
 <style id="fst-minimal-header-layout">
@@ -745,7 +790,18 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
 </aside>
 <main>
 <section id="page-dashboard" class="page">
-  <div class="hero"><div class="hero-content"><div class="eyebrow">◆ A NOVA GERAÇÃO COMEÇA AQUI</div><h1>CONSTRUA O <span>LEGADO.</span><br>DOMINE A TEMPORADA.</h1><p>O centro de comando do FUTURE STARS FC. Registre resultados, acompanhe a evolução do elenco e transforme cada partida em história.</p><div class="hero-actions"><button class="btn primary" data-action="add-match">＋ REGISTRAR PARTIDA</button><button class="btn" data-go="squad">▣ GERENCIAR ELENCO</button></div></div></div>
+  <section class="fst-club-overview" aria-label="Central de gestão do clube">
+    <div class="fst-overview-main">
+      <div class="fst-overview-kicker"><span class="fst-live-dot"></span> CENTRAL DO CLUBE <span class="fst-overview-separator">/</span> FUTURE STARS FC</div>
+      <h1>Visão geral <span>da temporada</span></h1>
+      <p>Resultados, elenco e evolução do clube em um só lugar.</p>
+    </div>
+    <div class="fst-overview-actions">
+      <button class="btn primary" data-action="add-match">＋ REGISTRAR PARTIDA</button>
+      <button class="btn" data-go="squad">▣ GERENCIAR ELENCO</button>
+    </div>
+    <div class="fst-overview-mark" aria-hidden="true">FST</div>
+  </section>
   <div class="stats">
     <div class="stat"><div class="stat-top">PARTIDAS REGISTRADAS <span class="stat-icon">⚽</span></div><strong id="statMatches">0</strong><small>Histórico da temporada</small></div>
     <div class="stat"><div class="stat-top">VITÓRIAS <span class="stat-icon">↗</span></div><strong id="statWins">0</strong><small id="winRate">0% de aproveitamento</small></div>
