@@ -825,6 +825,14 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
  .fst-clock>span:last-child{font-size:9px}
  .fst-account{gap:0}
 }
+
+/* FST Stream Center: atalho de clipe sobre o player */
+.fst-live-player-wrap{position:relative;overflow:hidden}
+.fst-live-player-wrap iframe{display:block;position:relative;z-index:1}
+.fst-clip-overlay{position:absolute;top:12px;right:12px;z-index:5;display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border:1px solid rgba(255,255,255,.35);border-radius:8px;background:rgba(145,40,55,.94);color:#fff;font-weight:800;font-size:12px;letter-spacing:.04em;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);backdrop-filter:blur(8px)}
+.fst-clip-overlay:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.fst-clip-kick{background:rgba(35,115,30,.96)}
+
 </style>
 
 </head>
@@ -878,8 +886,6 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
     <button data-page="competitions" title="Competições"><span class="ico">🏆</span><span class="nav-text">Competições</span></button>
     <button data-page="stats" title="Estatísticas"><span class="ico">📊</span><span class="nav-text">Estatísticas</span></button>
     <button data-page="badges" title="Conquistas"><span class="ico">🏅</span><span class="nav-text">Conquistas</span></button>
-    <button data-page="twitch" title="Twitch ao vivo"><span class="ico">🔴</span><span class="nav-text">Twitch Live</span></button>
-    <button data-page="streamhub" title="Lives e clipes"><span class="ico">🎬</span><span class="nav-text">Lives & Clipes</span></button>
   </nav>
   <div class="sidebar-bottom">
   <button class="sidebar-bottom-btn" data-page="settings" title="Configurações"><span class="ico">⚙</span><span class="nav-text">Settings</span></button>
@@ -908,7 +914,7 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
       <h2>FUTURE STARS FC <span>× TWITCH</span></h2>
       <p>Acompanhe a live do canal sem sair do painel do clube.</p>
     </div>
-    <button class="btn" data-go="twitch">ABRIR CENTRAL DA LIVE ↗</button>
+    
   </div>
   <div class="twitch-dashboard-setup" id="dashTwitchSetup">
     <label for="dashTwitchChannel">Nome do canal na Twitch</label>
@@ -918,8 +924,32 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
     </div>
     <small>Informe apenas o nome de usuário do canal, sem o link completo.</small>
   </div>
-  <div class="twitch-player-wrap hidden" id="dashTwitchPlayerWrap">
+  <div class="twitch-player-wrap hidden fst-live-player-wrap" id="dashTwitchPlayerWrap">
+    <button class="fst-clip-overlay" type="button" data-action="clip-twitch-dashboard" title="Abrir criação de clipe da Twitch">✂ CLIP</button>
     <iframe id="dashTwitchPlayer" title="Live da Twitch do FUTURE STARS FC" allowfullscreen loading="lazy" referrerpolicy="origin" allow="autoplay; fullscreen"></iframe>
+  </div>
+</section>
+
+<section class="twitch-dashboard-card" aria-label="Live da Kick" style="margin-top:18px">
+  <div class="twitch-card-head">
+    <div>
+      <div class="twitch-kicker"><span class="twitch-live-dot" style="background:#53fc18"></span> TRANSMISSÃO AO VIVO</div>
+      <h2>FUTURE STARS FC <span>× KICK</span></h2>
+      <p>Assista às lives da Kick diretamente no dashboard do clube.</p>
+    </div>
+    <a class="btn" href="https://kick.com/categories" target="_blank" rel="noopener noreferrer">EXPLORAR LIVES ↗</a>
+  </div>
+  <div class="twitch-dashboard-setup">
+    <label for="dashKickChannel">Nome do canal na Kick</label>
+    <div class="twitch-channel-form">
+      <input id="dashKickChannel" type="text" placeholder="Ex.: nome_do_canal" autocomplete="off" maxlength="40">
+      <button class="btn primary" type="button" data-action="load-kick-dashboard">CARREGAR LIVE</button>
+    </div>
+    <small>Digite o nome do canal da Kick para assistir pelo painel.</small>
+  </div>
+  <div class="twitch-player-wrap hidden fst-live-player-wrap" id="dashKickPlayerWrap">
+    <button class="fst-clip-overlay fst-clip-kick" type="button" data-action="clip-kick-dashboard" title="Abrir a live na Kick para criar um clipe">✂ CLIP</button>
+    <iframe id="dashKickPlayer" title="Transmissão ao vivo na Kick" allowfullscreen loading="lazy" allow="autoplay; fullscreen" style="width:100%;aspect-ratio:16/9;border:0"></iframe>
   </div>
 </section>
 
@@ -1192,13 +1222,14 @@ function renderFstClips(){
  if(!clips.length){box.innerHTML='<div class="clip-empty">Seus melhores momentos vão aparecer aqui.</div>';return;}
  box.innerHTML=clips.map(c=>`<article class="clip-item"><div><strong>${esc(c.title)}</strong><small>${esc(c.platform)} · ${esc(c.date||'Salvo agora')}</small></div><div class="clip-item-actions"><a href="${esc(c.url)}" target="_blank" rel="noopener noreferrer">ASSISTIR ↗</a><button type="button" data-action="delete-clip" data-clip-id="${esc(c.id)}">EXCLUIR</button></div></article>`).join('');
 }
-function openKickChannel(){
- const input=document.getElementById('kickChannelSearch');const channel=String(input?.value||'').trim().replace(/^@/,'').replace(/^https?:\/\/(www\.)?kick\.com\//i,'').split(/[/?#]/)[0].replace(/[^a-zA-Z0-9_-]/g,'');
+function openKickChannel(inputOverride){
+ const input=inputOverride||document.getElementById('dashKickChannel')||document.getElementById('kickChannelSearch');
+ const channel=String(input?.value||'').trim().replace(/^@/,'').replace(/^https?:\/\/(www\.)?kick\.com\//i,'').split(/[/?#]/)[0].replace(/[^a-zA-Z0-9_-]/g,'');
  if(!channel){window.open('https://kick.com/categories','_blank','noopener');return;}
- const wrap=document.getElementById('kickPlayerWrap'),frame=document.getElementById('kickPlayer');
+ const dash=!!inputOverride || input?.id==='dashKickChannel';
+ const wrap=document.getElementById(dash?'dashKickPlayerWrap':'kickPlayerWrap'),frame=document.getElementById(dash?'dashKickPlayer':'kickPlayer');
  if(frame)frame.src='https://player.kick.com/'+encodeURIComponent(channel);
  if(wrap)wrap.classList.remove('hidden');
- window.open('https://kick.com/'+encodeURIComponent(channel),'_blank','noopener');
 }
 function handleStreamhubAction(action,button){
  if(action==='kick-discover'){window.open('https://kick.com/categories','_blank','noopener');return true;}
@@ -1218,7 +1249,22 @@ document.getElementById('clipSaveForm')?.addEventListener('submit',e=>{
 });
 
 function navigate(page){if(page==='streamhub')renderFstClips();document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById('page-'+page)?.classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'});render()}
-document.addEventListener('click',e=>{const sv=e.target.closest('[data-squad-view]');if(sv){const view=sv.dataset.squadView;document.getElementById('squadPlayersView')?.classList.toggle('hidden',view!=='players');document.getElementById('squadBuilderView')?.classList.toggle('hidden',view!=='builder');document.querySelectorAll('[data-squad-view]').forEach(b=>b.classList.toggle('active',b===sv));if(view==='builder')renderSquadBuilder();return;}const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a){if(handleStreamhubAction(a.dataset.action,a))return;if(a.dataset.action==='load-twitch-dashboard'){applyTwitchChannel(document.getElementById('dashTwitchChannel')?.value);return;}if(a.dataset.action==='load-twitch-page'){applyTwitchChannel(document.getElementById('twitchChannel')?.value);return;}openModal(a.dataset.action)}});
+document.addEventListener('click',e=>{const sv=e.target.closest('[data-squad-view]');if(sv){const view=sv.dataset.squadView;document.getElementById('squadPlayersView')?.classList.toggle('hidden',view!=='players');document.getElementById('squadBuilderView')?.classList.toggle('hidden',view!=='builder');document.querySelectorAll('[data-squad-view]').forEach(b=>b.classList.toggle('active',b===sv));if(view==='builder')renderSquadBuilder();return;}const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a){if(handleStreamhubAction(a.dataset.action,a))return;
+if(a.dataset.action==='clip-twitch-dashboard'){
+ let ch='';try{ch=localStorage.getItem(FST_TWITCH_CHANNEL_KEY)||document.getElementById('dashTwitchChannel')?.value||''}catch(e){}
+ ch=cleanTwitchChannel(ch);
+ if(!ch){toast('Carregue primeiro um canal da Twitch.');return;}
+ window.open('https://www.twitch.tv/'+encodeURIComponent(ch)+'/clip','_blank','noopener');
+ return;
+}
+if(a.dataset.action==='clip-kick-dashboard'){
+ let ch=String(document.getElementById('dashKickChannel')?.value||'').trim().replace(/^@/,'').replace(/^https?:\/\/(www\.)?kick\.com\//i,'').split(/[/?#]/)[0].replace(/[^a-zA-Z0-9_-]/g,'');
+ if(!ch){toast('Carregue primeiro um canal da Kick.');return;}
+ window.open('https://kick.com/'+encodeURIComponent(ch),'_blank','noopener');
+ toast('A live abriu na Kick. Use o botão de clipe do player oficial para criar o clipe.');
+ return;
+}
+if(a.dataset.action==='load-twitch-dashboard'){applyTwitchChannel(document.getElementById('dashTwitchChannel')?.value);return;}if(a.dataset.action==='load-kick-dashboard'){openKickChannel(document.getElementById('dashKickChannel'));return;}if(a.dataset.action==='load-twitch-page'){applyTwitchChannel(document.getElementById('twitchChannel')?.value);return;}openModal(a.dataset.action)}});
 document.getElementById('sidebarToggle')?.addEventListener('click',()=>{const collapsed=!document.body.classList.contains('sidebar-collapsed');applySidebarState(collapsed);try{localStorage.setItem(SIDEBAR_COLLAPSE_KEY,collapsed?'1':'0')}catch(e){}});
 try{applySidebarState(localStorage.getItem(SIDEBAR_COLLAPSE_KEY)==='1')}catch(e){applySidebarState(false)}
 function resultLabel(m){if(m.our>m.their)return'VITÓRIA';if(m.our<m.their)return'DERROTA';return'EMPATE'}
