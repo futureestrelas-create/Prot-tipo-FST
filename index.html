@@ -888,23 +888,44 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
   display: none !important;
 }
 
+
+/* V24 — Stream Center compacto logo abaixo da visão geral */
+.fst-stream-compact{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0 16px;padding:10px 12px;border:1px solid #333842;border-left:3px solid #e9102b;border-radius:11px;background:linear-gradient(100deg,#171116,#101217 55%,#0c0e12);color:#f6f7f9}
+.fst-stream-compact-head{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.fst-stream-live-dot{width:7px;height:7px;border-radius:50%;background:#f20d30;box-shadow:0 0 8px #e9102b}
+.fst-stream-compact-head strong{font-size:11px;letter-spacing:.1em;white-space:nowrap}
+.fst-stream-platforms{display:flex;gap:3px;padding:3px;background:#08090c;border:1px solid #30343c;border-radius:8px}
+.fst-platform-btn{border:0;border-radius:6px;padding:6px 10px;background:transparent;color:#b7bdc8;font-size:11px;font-weight:850;cursor:pointer}
+.fst-platform-btn.active{background:#e9102b;color:#fff}
+.fst-platform-btn[data-platform="kick"].active{background:#53b848;color:#071007}
+.fst-stream-compact-controls{display:flex;gap:7px;flex:1 1 260px;min-width:220px}
+.fst-stream-compact-controls input{min-width:0;flex:1;background:#080a0d;border:1px solid #363b44;border-radius:7px;padding:9px 11px;color:#fff;font-size:12px;outline:none}
+.fst-stream-compact-controls button{border:0;border-radius:7px;background:#e9102b;color:#fff;font-weight:900;font-size:10px;padding:0 13px;white-space:nowrap;cursor:pointer}
+.fst-stream-compact-hint{flex-basis:100%;margin-top:-5px;color:#838c9a;font-size:10px;padding-left:15px}
+#fstCompactPlayerSlot{display:none;flex-basis:100%;width:100%;max-width:560px;margin:2px auto 0}
+#fstCompactPlayerSlot.active{display:block}
+#fstCompactPlayerSlot iframe{display:block;width:100%;height:250px;border:0;border-radius:8px;background:#050608}
+@media(max-width:700px){.fst-stream-compact{gap:9px}.fst-stream-compact-head{width:100%;justify-content:space-between}.fst-stream-compact-controls{flex-basis:100%;min-width:0}#fstCompactPlayerSlot iframe{height:210px}}
+
 </style>
 
 </head>
 <body>
+
 <section class="fst-stream-compact" id="fstStreamCompact">
   <div class="fst-stream-compact-head">
-    <div class="fst-stream-title"><span class="fst-stream-live-dot"></span><div><strong>STREAM CENTER</strong><small>Assista às lives sem sair do clube</small></div></div>
+    <span class="fst-stream-live-dot"></span>
+    <strong>STREAM CENTER</strong>
     <div class="fst-stream-platforms" role="group" aria-label="Plataforma">
       <button type="button" class="fst-platform-btn active" data-platform="twitch">Twitch</button>
       <button type="button" class="fst-platform-btn" data-platform="kick">Kick</button>
     </div>
   </div>
   <div class="fst-stream-compact-controls">
-    <input id="fstCompactChannel" type="text" autocomplete="off" placeholder="Nome do canal (ex.: seuusuario)" aria-label="Nome do canal">
-    <button type="button" id="fstCompactLoad">▶ CARREGAR LIVE</button>
+    <input id="fstCompactChannel" type="text" autocomplete="off" placeholder="Canal da Twitch" aria-label="Nome do canal">
+    <button type="button" id="fstCompactLoad">▶ ASSISTIR</button>
   </div>
-  <div class="fst-stream-compact-hint" id="fstCompactHint">Escolha Twitch ou Kick, informe o canal e carregue a transmissão.</div>
+  <div class="fst-stream-compact-hint" id="fstCompactHint">Escolha a plataforma e informe o canal.</div>
   <div id="fstCompactPlayerSlot"></div>
 </section>
 
@@ -1696,6 +1717,37 @@ render();
       if(card && card!==document.body)card.style.setProperty('display','none','important');
     }
   });
+})();
+</script>
+
+
+<script>
+/* V24-stream-handler */
+(function(){
+ const root=document.getElementById('fstStreamCompact'); if(!root)return;
+ let platform='twitch';
+ const $=id=>document.getElementById(id);
+ function setPlatform(p){
+   platform=p;
+   root.querySelectorAll('[data-platform]').forEach(b=>b.classList.toggle('active',b.dataset.platform===p));
+   $('fstCompactChannel').placeholder=p==='twitch'?'Canal da Twitch':'Canal da Kick';
+   $('fstCompactHint').textContent=p==='twitch'?'Twitch selecionada. Informe o usuário do canal.':'Kick selecionada. Informe o nome do canal.';
+ }
+ root.querySelectorAll('[data-platform]').forEach(b=>b.addEventListener('click',()=>setPlatform(b.dataset.platform)));
+ $('fstCompactLoad').addEventListener('click',()=>{
+   let channel=$('fstCompactChannel').value.trim().replace(/^@/,'');
+   if(!channel){$('fstCompactHint').textContent='Digite o nome do canal primeiro.';return;}
+   channel=channel.replace(/^https?:\/\/(www\.)?(twitch\.tv|kick\.com)\//i,'').split(/[/?#]/)[0];
+   const slot=$('fstCompactPlayerSlot');
+   if(platform==='twitch'){
+     const parent=location.hostname||'localhost';
+     slot.innerHTML='<iframe title="Twitch Live" allowfullscreen="true" scrolling="no" allow="autoplay; fullscreen" src="https://player.twitch.tv/?channel='+encodeURIComponent(channel)+'&parent='+encodeURIComponent(parent)+'&muted=true"></iframe>';
+   }else{
+     slot.innerHTML='<iframe title="Kick Live" allowfullscreen="true" scrolling="no" allow="autoplay; fullscreen" src="https://player.kick.com/'+encodeURIComponent(channel)+'"></iframe>';
+   }
+   slot.classList.add('active');
+   $('fstCompactHint').textContent='Player pronto para '+channel+'.';
+ });
 })();
 </script>
 
