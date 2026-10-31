@@ -907,10 +907,54 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
 #fstCompactPlayerSlot iframe{display:block;width:100%;height:250px;border:0;border-radius:8px;background:#050608}
 @media(max-width:700px){.fst-stream-compact{gap:9px}.fst-stream-compact-head{width:100%;justify-content:space-between}.fst-stream-compact-controls{flex-basis:100%;min-width:0}#fstCompactPlayerSlot iframe{height:210px}}
 
+
+/* V25 — tela de entrada inspirada na referência, sem copiar marca de terceiros */
+.fst-login-screen{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(5,6,10,.90);backdrop-filter:blur(8px);overflow:auto}
+.fst-login-card{width:min(100%,430px);padding:28px 32px 0;background:#1b1d29;border:1px solid #343747;border-radius:14px;color:#f6f6fb;box-shadow:0 24px 70px rgba(0,0,0,.55);font-family:inherit}
+.fst-login-brand{width:max-content;margin:0 auto 22px;padding:2px 10px;border-radius:4px;background:#e9102b;color:#08090b;font-size:28px;font-weight:1000;font-style:italic;letter-spacing:-.06em}
+.fst-login-brand span{color:#fff}
+.fst-login-card h1{margin:0;text-align:center;font-size:21px;font-weight:850;letter-spacing:-.03em}
+.fst-login-subtitle{text-align:center;color:#c0c3d0;font-size:13px;margin:10px 0 24px}
+.fst-login-socials{display:flex;gap:8px}
+.fst-login-social{display:flex;align-items:center;justify-content:center;gap:8px;flex:1;padding:11px 8px;border:1px solid #44485b;border-radius:7px;background:#292c3c;color:#fff;font-weight:800;cursor:pointer}
+.fst-login-social span{font-size:12px}
+.fst-login-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:#c2c5d2;font-size:12px}
+.fst-login-divider:before,.fst-login-divider:after{content:"";height:1px;background:#383b4b;flex:1}
+.fst-login-card label{display:block;margin:14px 0 6px;font-size:12px;font-weight:750;color:#d5d7e1}
+.fst-login-card input{box-sizing:border-box;width:100%;padding:11px 12px;border:1px solid #44485b;border-radius:7px;background:#292c3c;color:#fff;font:inherit;font-size:13px;outline:none}
+.fst-login-card input:focus{border-color:#e9102b;box-shadow:0 0 0 2px rgba(233,16,43,.14)}
+.fst-login-continue{width:100%;margin:16px 0 0;padding:12px;border:0;border-radius:7px;background:#e9102b;color:#fff;font-weight:900;cursor:pointer}
+.fst-login-message{min-height:30px;color:#b7bbc9;font-size:11px;line-height:1.45;margin:12px 0 16px}
+.fst-login-footer{margin:0 -32px;padding:16px;border-top:1px solid #343747;text-align:center;color:#c0c3d0;font-size:12px}
+.fst-login-footer button{border:0;background:none;color:#ff334c;font:inherit;font-weight:800;cursor:pointer}
+@media(max-width:480px){.fst-login-card{padding:24px 20px 0}.fst-login-footer{margin:0 -20px}}
+
 </style>
 
 </head>
 <body>
+
+<div id="fstLoginScreen" class="fst-login-screen">
+  <div class="fst-login-card">
+    <div class="fst-login-brand">FST<span>FC</span></div>
+    <h1>Entre no FUTURE STARS FC</h1>
+    <p class="fst-login-subtitle">Bem-vindo de volta! Entre para continuar.</p>
+    <div class="fst-login-socials">
+      <button type="button" class="fst-login-social" data-login-provider="discord" aria-label="Discord">◉ <span>Discord</span></button>
+      <button type="button" class="fst-login-social" data-login-provider="google" aria-label="Google">G <span>Google</span></button>
+    </div>
+    <div class="fst-login-divider"><span>ou</span></div>
+    <label for="fstLoginUser">E-mail ou nome de usuário</label>
+    <input id="fstLoginUser" type="text" autocomplete="username" placeholder="Digite seu e-mail ou usuário">
+    <label for="fstLoginPassword">Senha</label>
+    <input id="fstLoginPassword" type="password" autocomplete="current-password" placeholder="Digite sua senha">
+    <button id="fstLoginContinue" class="fst-login-continue" type="button">Entrar no clube</button>
+    <p id="fstLoginMessage" class="fst-login-message">A autenticação real precisa ser conectada ao Firebase Authentication.</p>
+    <div class="fst-login-footer">Novo por aqui? <button type="button" id="fstLoginGuest">Continuar como visitante</button></div>
+  </div>
+</div>
+
+
 
 <section class="fst-stream-compact" id="fstStreamCompact">
   <div class="fst-stream-compact-head">
@@ -1748,6 +1792,24 @@ render();
    slot.classList.add('active');
    $('fstCompactHint').textContent='Player pronto para '+channel+'.';
  });
+})();
+</script>
+
+
+<script>
+/* fst-entry-script-v25 */
+(function(){
+ const screen=document.getElementById('fstLoginScreen'); if(!screen)return;
+ const msg=document.getElementById('fstLoginMessage');
+ const hide=()=>{screen.style.display='none';try{sessionStorage.setItem('fst-entry-passed','1')}catch(e){}};
+ try{if(sessionStorage.getItem('fst-entry-passed')==='1')screen.style.display='none'}catch(e){}
+ document.getElementById('fstLoginGuest').addEventListener('click',hide);
+ document.getElementById('fstLoginContinue').addEventListener('click',()=>{
+   msg.textContent='Login ainda não conectado. Para proteger sua conta, conecte este formulário ao Firebase Authentication antes de aceitar e-mail e senha.';
+ });
+ document.querySelectorAll('[data-login-provider]').forEach(b=>b.addEventListener('click',()=>{
+   msg.textContent='Login com '+b.dataset.loginProvider+' ainda precisa de configuração OAuth e integração com Firebase Authentication.';
+ }));
 })();
 </script>
 
