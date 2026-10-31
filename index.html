@@ -879,6 +879,15 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
 #fstCompactPlayerSlot iframe{display:block;width:100%;height:340px;border:0;border-radius:10px;background:#050608}
 @media(max-width:600px){.fst-stream-compact{padding:14px}.fst-stream-compact-head{align-items:flex-start;flex-direction:column}.fst-stream-compact-controls button{padding:0 10px}#fstCompactPlayerSlot iframe{height:220px}}
 
+
+/* V23 — remove definitivamente os formulários antigos da Twitch e Kick */
+label[for="dashTwitchChannel"], label[for="dashKickChannel"],
+#dashTwitchChannel, #dashKickChannel,
+#dashTwitchChannel + button, #dashKickChannel + button,
+#dashTwitchChannel ~ button, #dashKickChannel ~ button {
+  display: none !important;
+}
+
 </style>
 
 </head>
@@ -1651,6 +1660,42 @@ render();
    }
    if(card && card.id!=='fstStreamCompact')card.style.display='none';
  });
+})();
+</script>
+
+
+<script>
+/* V23-remove-old-live-cards */
+(function(){
+  const ids=['dashTwitchChannel','dashKickChannel'];
+  ids.forEach(id=>{
+    const input=document.getElementById(id);
+    if(!input)return;
+    let node=input;
+    for(let i=0;i<8 && node && node!==document.body;i++){
+      if(node.closest && node.closest('#fstStreamCompact'))break;
+      const text=(node.innerText||node.textContent||'').toLowerCase();
+      const cls=String(node.className||'');
+      if(i>=2 && (/card|panel|live|stream/i.test(cls) || /nome do canal na twitch|nome do canal na kick/i.test(text))){
+        node.style.setProperty('display','none','important');
+        break;
+      }
+      node=node.parentElement;
+    }
+  });
+  // Also hide any remaining old heading cards even if their inputs were stripped from the DOM.
+  document.querySelectorAll('h1,h2,h3,h4,div,section,article').forEach(el=>{
+    if(el.closest && el.closest('#fstStreamCompact'))return;
+    const t=(el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+    if((t.includes('fut ure stars fc')||t.includes('future stars fc')) && (t.includes('× twitch')||t.includes('× kick')) && t.length<220){
+      let card=el;
+      for(let i=0;i<6 && card.parentElement;i++){
+        if(card.matches('section,article') || /card|panel|live|stream/i.test(String(card.className||'')))break;
+        card=card.parentElement;
+      }
+      if(card && card!==document.body)card.style.setProperty('display','none','important');
+    }
+  });
 })();
 </script>
 
