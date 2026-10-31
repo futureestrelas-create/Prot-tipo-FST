@@ -406,6 +406,50 @@ body.sidebar-collapsed .nav button:hover{transform:none}
 .comp-stage-note{margin-top:13px;padding:12px;border-radius:9px;background:#151922;border:1px solid #2e3440;font-size:12px;color:#e4e7ec}
 .comp-stage-note span{color:#ff9aa8}
 @media(max-width:650px){.comp-campaign-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.comp-bracket-grid{grid-template-columns:1fr}.comp-round{width:100%}}
+
+/* ===== FUTURE STARS FC · DASHBOARD ULTIMATE INSPIRED ===== */
+:root{--bg:#080a0b;--panel:#111416;--panel2:#171b1d;--line:#292f30;--red:#e52d48;--red2:#ff4560;--green:#24f0a2;--gold:#f3ca67;--muted:#9aa4a3}
+body{background:radial-gradient(ellipse at 12% 0%,#073a2b 0,transparent 28%),radial-gradient(ellipse at 95% 6%,#241017 0,transparent 30%),#070909}
+.topbar.fst-topbar{background:rgba(8,10,10,.94)!important;border-bottom:1px solid #252e2c;box-shadow:0 8px 32px #0004}
+.layout{grid-template-columns:218px minmax(0,1fr);gap:0}
+.sidebar{background:linear-gradient(180deg,#101313,#0a0c0c);border-right:1px solid #252b29}
+.nav button.active,.nav button:hover{background:linear-gradient(90deg,#14392d,#1a2420);border-color:#225f49}
+.nav button.active .ico{color:var(--green)}
+.season,.pill{color:#8fffd0;background:#10271e;border-color:#20543f}
+main{padding:24px 26px 34px}
+#page-dashboard .hero{padding:24px 27px;min-height:170px;border-color:#214638;background:linear-gradient(100deg,rgba(6,15,12,.96),rgba(10,40,29,.85)),repeating-linear-gradient(135deg,transparent 0 22px,#21ef9e0a 23px 24px);box-shadow:0 12px 34px #0003}
+#page-dashboard .hero:after{content:'FUTURE STARS';font-size:clamp(60px,9vw,120px);right:14px;bottom:-24px;color:#eafff506}
+#page-dashboard .hero .eyebrow{color:var(--green)}
+#page-dashboard .hero h1{font-size:clamp(25px,3vw,39px);margin:9px 0}
+#page-dashboard .hero p{font-size:12px;max-width:520px;margin:8px 0}
+#page-dashboard .hero-actions{margin-top:14px}
+#page-dashboard .btn.primary{background:var(--green);border-color:var(--green);color:#06130e;box-shadow:0 7px 22px #24f0a21a}
+#page-dashboard .stats{gap:12px;margin:15px 0}
+#page-dashboard .stat{background:linear-gradient(145deg,#171b1b,#101212);border:1px solid #28312e;border-radius:13px;padding:15px 16px;box-shadow:0 8px 20px #0002}
+#page-dashboard .stat-icon{color:var(--green)}
+#page-dashboard .stat strong{font-size:28px;margin:9px 0 3px}
+#page-dashboard .dash-insights{gap:10px}
+#page-dashboard .dash-mini{background:linear-gradient(145deg,#13221c,#111414);border-color:#243a30;border-radius:12px}
+#page-dashboard .dash-mini-icon{color:var(--green)}
+#page-dashboard .dash-lower-grid{grid-template-columns:1fr 1fr;gap:13px;margin-top:16px}
+#page-dashboard .panel{background:linear-gradient(145deg,#151919,#101212);border-color:#29312e;border-radius:14px;box-shadow:0 8px 24px #0002}
+#page-dashboard .section{margin-top:15px}
+#page-dashboard .grid2{grid-template-columns:1.1fr .9fr;gap:13px}
+#page-dashboard .section-head{margin-bottom:12px}
+#page-dashboard .section-head h2{font-size:16px}
+#page-dashboard .section-head p{font-size:10px}
+#page-dashboard .match{background:#191e1c;border-color:#2c3732}
+#page-dashboard .competition{background:#171b19;border-color:#2a342f}
+#page-dashboard .player-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:11px}
+#page-dashboard .player-card{min-height:190px;border-color:#46554c;background:linear-gradient(155deg,#303a34,#111615 55%,#193d2e)}
+#page-dashboard .player-position{color:#8effc9}
+#page-dashboard .dash-form .form-result{border-radius:8px}
+#page-dashboard .empty{background:#111514;border-color:#303b35}
+#page-dashboard .footer{padding-top:22px}
+@media(max-width:1100px){#page-dashboard .player-grid{grid-template-columns:repeat(4,minmax(0,1fr))}main{padding:20px}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}#page-dashboard .dash-lower-grid,#page-dashboard .grid2{grid-template-columns:1fr}#page-dashboard .player-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){main{padding:14px 12px 90px}#page-dashboard .hero{padding:20px 17px}#page-dashboard .hero h1{font-size:27px}#page-dashboard .stats{grid-template-columns:repeat(2,minmax(0,1fr))}#page-dashboard .dash-insights{grid-template-columns:repeat(2,minmax(0,1fr))}#page-dashboard .player-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#page-dashboard .stat strong{font-size:25px}}
+
 </style>
 </head>
 <body>
