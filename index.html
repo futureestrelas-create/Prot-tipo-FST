@@ -753,6 +753,20 @@ body{background:#08090b!important;color:var(--fst-text)}
 .cup-stats-footnote{margin:10px 0 0;color:#858791;font-size:10px;line-height:1.5}
 @media(max-width:760px){.cup-leaders-grid{grid-template-columns:1fr}.cup-leader-card{padding:12px}.cup-player-performance .section-head h2{font-size:17px}}
 
+
+.twitch-dashboard-card,.twitch-live-panel{margin:18px 0 24px;border:1px solid #343943;border-radius:18px;background:linear-gradient(130deg,#17191f,#0d0f13 75%);overflow:hidden;box-shadow:0 12px 34px #0003}
+.twitch-card-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 24px;border-bottom:1px solid #292d36;background:linear-gradient(110deg,#221015,#121318 62%,#181a20)}
+.twitch-kicker{font-size:10px;letter-spacing:.2em;font-weight:900;color:#ff5360;display:flex;align-items:center;gap:8px}
+.twitch-live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#ed1c2e;box-shadow:0 0 12px #ed1c2e;animation:twitchPulse 1.5s infinite}
+.twitch-card-head h2{font-size:21px;margin:8px 0 5px;font-weight:900;letter-spacing:-.03em}.twitch-card-head h2 span{color:#ed1c2e}.twitch-card-head p{margin:0;color:#9298a5;font-size:13px;line-height:1.5}
+.twitch-dashboard-setup{padding:18px 24px 22px}.twitch-dashboard-setup label{display:block;font-size:12px;font-weight:800;margin-bottom:9px;color:#d7dae0}
+.twitch-channel-form{display:flex;gap:10px;align-items:center}.twitch-channel-form input{flex:1;min-width:0;background:#090a0d;border:1px solid #373b45;border-radius:10px;color:#f6f7f9;padding:12px 14px;outline:none}.twitch-channel-form input:focus{border-color:#ed1c2e;box-shadow:0 0 0 3px #ed1c2e20}.twitch-dashboard-setup small{display:block;color:#777f8d;margin-top:8px;font-size:11px}
+.twitch-player-wrap{width:100%;aspect-ratio:16/9;background:#050506;max-height:680px}.twitch-player-wrap iframe{width:100%;height:100%;border:0;display:block}
+.twitch-live-panel{padding-bottom:20px}.twitch-live-panel>.twitch-card-head{margin:-1px -1px 18px}.twitch-page-form{padding:0 22px 18px}.twitch-page-form input{max-width:430px}.twitch-live-panel .twitch-player-wrap{margin:0 auto;width:calc(100% - 44px);border:1px solid #343943;border-radius:12px;overflow:hidden}
+.twitch-empty-state{text-align:center;padding:40px 18px 34px;color:#a3a8b2}.twitch-empty-state h3{color:#f6f7f9;margin:12px 0 7px}.twitch-empty-state p{font-size:13px;margin:0}.twitch-empty-icon{margin:auto;display:grid;place-items:center;width:54px;height:54px;border-radius:16px;background:#301017;border:1px solid #5d202b;color:#ff5360;font-size:23px}
+.twitch-note{padding:0 22px;color:#777f8d;font-size:11px;line-height:1.6}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@keyframes twitchPulse{50%{opacity:.45;box-shadow:0 0 3px #ed1c2e}}
+@media(max-width:680px){.twitch-card-head{align-items:flex-start;flex-direction:column;padding:18px}.twitch-card-head .btn{width:100%}.twitch-channel-form{align-items:stretch;flex-direction:column}.twitch-channel-form .btn{width:100%}.twitch-page-form input{max-width:none}.twitch-live-panel .twitch-player-wrap{width:calc(100% - 24px)}}
 </style>
 
 <style id="fst-minimal-header-layout">
@@ -857,6 +871,7 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
     <button data-page="competitions" title="Competições"><span class="ico">🏆</span><span class="nav-text">Competições</span></button>
     <button data-page="stats" title="Estatísticas"><span class="ico">📊</span><span class="nav-text">Estatísticas</span></button>
     <button data-page="badges" title="Conquistas"><span class="ico">🏅</span><span class="nav-text">Conquistas</span></button>
+    <button data-page="twitch" title="Twitch ao vivo"><span class="ico">🔴</span><span class="nav-text">Twitch Live</span></button>
   </nav>
   <div class="sidebar-bottom">
   <button class="sidebar-bottom-btn" data-page="settings" title="Configurações"><span class="ico">⚙</span><span class="nav-text">Settings</span></button>
@@ -877,7 +892,30 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
     </div>
     <div class="fst-overview-mark" aria-hidden="true">FST</div>
   </section>
-  <div class="stats">
+  
+<section class="twitch-dashboard-card" aria-label="Live da Twitch">
+  <div class="twitch-card-head">
+    <div>
+      <div class="twitch-kicker"><span class="twitch-live-dot"></span> TRANSMISSÃO AO VIVO</div>
+      <h2>FUTURE STARS FC <span>× TWITCH</span></h2>
+      <p>Acompanhe a live do canal sem sair do painel do clube.</p>
+    </div>
+    <button class="btn" data-go="twitch">ABRIR CENTRAL DA LIVE ↗</button>
+  </div>
+  <div class="twitch-dashboard-setup" id="dashTwitchSetup">
+    <label for="dashTwitchChannel">Nome do canal na Twitch</label>
+    <div class="twitch-channel-form">
+      <input id="dashTwitchChannel" type="text" placeholder="Ex.: seuusuario" autocomplete="off" maxlength="25">
+      <button class="btn primary" type="button" data-action="load-twitch-dashboard">CARREGAR LIVE</button>
+    </div>
+    <small>Informe apenas o nome de usuário do canal, sem o link completo.</small>
+  </div>
+  <div class="twitch-player-wrap hidden" id="dashTwitchPlayerWrap">
+    <iframe id="dashTwitchPlayer" title="Live da Twitch do FUTURE STARS FC" allowfullscreen loading="lazy" referrerpolicy="origin" allow="autoplay; fullscreen"></iframe>
+  </div>
+</section>
+
+<div class="stats">
     <div class="stat"><div class="stat-top">PARTIDAS REGISTRADAS <span class="stat-icon">⚽</span></div><strong id="statMatches">0</strong><small>Histórico da temporada</small></div>
     <div class="stat"><div class="stat-top">VITÓRIAS <span class="stat-icon">↗</span></div><strong id="statWins">0</strong><small id="winRate">0% de aproveitamento</small></div>
     <div class="stat"><div class="stat-top">GOLS MARCADOS <span class="stat-icon">◎</span></div><strong id="statGoals">0</strong><small>Somatório das partidas</small></div>
@@ -1003,6 +1041,29 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
   <div id="badgeCategories" class="badge-categories"></div>
   <section class="panel" style="margin-top:16px"><div class="section-head"><div><span class="eyebrow">ÚLTIMAS CONQUISTAS</span><h2>Histórico de desbloqueios</h2><p>As notícias ficam disponíveis por 7 dias na Dashboard.</p></div></div><div id="badgeHistory" class="achievement-feed"></div></section>
 </section>
+
+<section id="page-twitch" class="page hidden">
+  <div class="page-head">
+    <div><div class="eyebrow">FUTURE STARS FC / COMUNIDADE</div><h1>Twitch <span>Live Center</span></h1><p>Deixe sua transmissão aberta dentro do site e acompanhe a live enquanto gerencia o clube.</p></div>
+  </div>
+  <section class="twitch-live-panel">
+    <div class="twitch-card-head">
+      <div><div class="twitch-kicker"><span class="twitch-live-dot"></span> PLAYER OFICIAL</div><h2>Assista à transmissão</h2><p>Digite o nome do seu canal para carregar o player.</p></div>
+      <a class="btn" id="twitchOpenChannel" href="https://www.twitch.tv/" target="_blank" rel="noopener noreferrer">ABRIR NA TWITCH ↗</a>
+    </div>
+    <div class="twitch-channel-form twitch-page-form">
+      <label class="sr-only" for="twitchChannel">Nome do canal</label>
+      <input id="twitchChannel" type="text" placeholder="Nome do canal (ex.: seuusuario)" autocomplete="off" maxlength="25">
+      <button class="btn primary" type="button" data-action="load-twitch-page">CARREGAR TRANSMISSÃO</button>
+    </div>
+    <div class="twitch-player-wrap hidden" id="twitchPlayerWrap">
+      <iframe id="twitchPlayer" title="Transmissão ao vivo na Twitch" allowfullscreen loading="lazy" referrerpolicy="origin" allow="autoplay; fullscreen"></iframe>
+    </div>
+    <div class="twitch-empty-state" id="twitchEmptyState"><div class="twitch-empty-icon">▶</div><h3>Seu canal. Sua torcida. Sua live.</h3><p>Configure seu nome de usuário uma vez. O site vai guardar essa preferência neste navegador.</p></div>
+    <p class="twitch-note">Se o player não carregar, confira se o canal está ao vivo e se o domínio do site está autorizado pelo player da Twitch. No GitHub Pages, o domínio usado pelo player é detectado automaticamente.</p>
+  </section>
+</section>
+
 <section id="page-settings" class="page hidden">
   <h1 class="page-title">Configurações do clube</h1><p class="page-subtitle">Personalize a temporada e faça uma cópia dos dados deste dispositivo.</p>
   <div class="panel"><div class="eyebrow">IDENTIDADE DO CLUBE</div><h2 style="margin-top:8px">FUTURE STARS FC</h2><p style="color:var(--muted);font-size:13px;line-height:1.7">Preto, vermelho, branco e prata. Talento, disciplina, evolução e resultados.</p><div class="field"><label>Nome do clube</label><input id="clubName" value="FUTURE STARS FC"></div><div class="field"><label>Nome da temporada</label><input id="seasonName" value="Temporada 01 · 2026"></div><button class="btn primary" id="saveSettings">SALVAR CONFIGURAÇÕES</button></div>
@@ -1012,7 +1073,7 @@ header.topbar.fst-topbar{height:72px;min-height:72px;padding:0 28px;background:#
 </main>
 </div>
 <nav class="mobile-nav" id="mobileNav">
-<button class="active" data-page="dashboard"><span>🏠</span>Início</button><button data-page="matches"><span>⚽</span>Partidas</button><button data-page="squad"><span>🃏</span>Elenco</button><button data-page="competitions"><span>🏆</span>Copas</button><button data-page="stats"><span>📊</span>Stats</button><button data-page="badges"><span>🏅</span>Badges</button>
+<button class="active" data-page="dashboard"><span>🏠</span>Início</button><button data-page="matches"><span>⚽</span>Partidas</button><button data-page="squad"><span>🃏</span>Elenco</button><button data-page="competitions"><span>🏆</span>Copas</button><button data-page="stats"><span>📊</span>Stats</button><button data-page="badges"><span>🏅</span>Badges</button><button data-page="twitch"><span>🔴</span>Live</button>
 </nav>
 </div>
 <div id="modalRoot"></div><div id="toastRoot"></div>
@@ -1039,8 +1100,49 @@ function save(){fstEvaluateBadges();localStorage.setItem(KEY,JSON.stringify(data
 data.squads=Array.isArray(data.squads)?data.squads:[];data.activeLineup= data.activeLineup && typeof data.activeLineup==='object' ? data.activeLineup : {name:'Minha escalação',formation:'433',slots:{}};
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function toast(msg){const r=document.getElementById('toastRoot');r.innerHTML='<div class="toast">'+esc(msg)+'</div>';setTimeout(()=>r.innerHTML='',2600)}
+
+const FST_TWITCH_CHANNEL_KEY='fst-twitch-channel';
+function cleanTwitchChannel(value){return String(value||'').trim().replace(/^@/,'').replace(/^https?:\/\/(www\.)?twitch\.tv\//i,'').split(/[/?#]/)[0].replace(/[^a-zA-Z0-9_]/g,'').slice(0,25);}
+function twitchPlayerUrl(channel){const parent=location.hostname||'localhost';return 'https://player.twitch.tv/?channel='+encodeURIComponent(channel)+'&parent='+encodeURIComponent(parent)+'&muted=true';}
+function applyTwitchChannel(channel){
+ const clean=cleanTwitchChannel(channel);
+ if(!clean){toast('Informe o nome do canal da Twitch.');return;}
+ try{localStorage.setItem(FST_TWITCH_CHANNEL_KEY,clean);}catch(e){}
+ const url=twitchPlayerUrl(clean);
+ const dashInput=document.getElementById('dashTwitchChannel');
+ const pageInput=document.getElementById('twitchChannel');
+ if(dashInput)dashInput.value=clean;
+ if(pageInput)pageInput.value=clean;
+ const dashFrame=document.getElementById('dashTwitchPlayer');
+ const dashWrap=document.getElementById('dashTwitchPlayerWrap');
+ if(dashFrame)dashFrame.src=url;
+ if(dashWrap)dashWrap.classList.remove('hidden');
+ const frame=document.getElementById('twitchPlayer');
+ const wrap=document.getElementById('twitchPlayerWrap');
+ const empty=document.getElementById('twitchEmptyState');
+ if(frame)frame.src=url;
+ if(wrap)wrap.classList.remove('hidden');
+ if(empty)empty.classList.add('hidden');
+ const open=document.getElementById('twitchOpenChannel');
+ if(open)open.href='https://www.twitch.tv/'+encodeURIComponent(clean);
+}
+function initTwitchChannel(){
+ let channel='';try{channel=localStorage.getItem(FST_TWITCH_CHANNEL_KEY)||'';}catch(e){}
+ if(channel){
+  const dashInput=document.getElementById('dashTwitchChannel');if(dashInput)dashInput.value=channel;
+  const pageInput=document.getElementById('twitchChannel');if(pageInput)pageInput.value=channel;
+  // Populate the embedded players after initial page setup.
+  const url=twitchPlayerUrl(channel);
+  const dashFrame=document.getElementById('dashTwitchPlayer'),dashWrap=document.getElementById('dashTwitchPlayerWrap');
+  if(dashFrame)dashFrame.src=url;if(dashWrap)dashWrap.classList.remove('hidden');
+  const frame=document.getElementById('twitchPlayer'),wrap=document.getElementById('twitchPlayerWrap'),empty=document.getElementById('twitchEmptyState');
+  if(frame)frame.src=url;if(wrap)wrap.classList.remove('hidden');if(empty)empty.classList.add('hidden');
+  const open=document.getElementById('twitchOpenChannel');if(open)open.href='https://www.twitch.tv/'+encodeURIComponent(channel);
+ }
+}
+
 function navigate(page){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById('page-'+page)?.classList.remove('hidden');document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'});render()}
-document.addEventListener('click',e=>{const sv=e.target.closest('[data-squad-view]');if(sv){const view=sv.dataset.squadView;document.getElementById('squadPlayersView')?.classList.toggle('hidden',view!=='players');document.getElementById('squadBuilderView')?.classList.toggle('hidden',view!=='builder');document.querySelectorAll('[data-squad-view]').forEach(b=>b.classList.toggle('active',b===sv));if(view==='builder')renderSquadBuilder();return;}const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a)openModal(a.dataset.action)});
+document.addEventListener('click',e=>{const sv=e.target.closest('[data-squad-view]');if(sv){const view=sv.dataset.squadView;document.getElementById('squadPlayersView')?.classList.toggle('hidden',view!=='players');document.getElementById('squadBuilderView')?.classList.toggle('hidden',view!=='builder');document.querySelectorAll('[data-squad-view]').forEach(b=>b.classList.toggle('active',b===sv));if(view==='builder')renderSquadBuilder();return;}const p=e.target.closest('[data-page]');if(p)navigate(p.dataset.page);const g=e.target.closest('[data-go]');if(g)navigate(g.dataset.go);const a=e.target.closest('[data-action]');if(a){if(a.dataset.action==='load-twitch-dashboard'){applyTwitchChannel(document.getElementById('dashTwitchChannel')?.value);return;}if(a.dataset.action==='load-twitch-page'){applyTwitchChannel(document.getElementById('twitchChannel')?.value);return;}openModal(a.dataset.action)}});
 document.getElementById('sidebarToggle')?.addEventListener('click',()=>{const collapsed=!document.body.classList.contains('sidebar-collapsed');applySidebarState(collapsed);try{localStorage.setItem(SIDEBAR_COLLAPSE_KEY,collapsed?'1':'0')}catch(e){}});
 try{applySidebarState(localStorage.getItem(SIDEBAR_COLLAPSE_KEY)==='1')}catch(e){applySidebarState(false)}
 function resultLabel(m){if(m.our>m.their)return'VITÓRIA';if(m.our<m.their)return'DERROTA';return'EMPATE'}
