@@ -2,26 +2,84 @@
 // Usa o FirebaseApp já inicializado pelo firebase-sync.js; não expõe chave de API no frontend.
 import { getAI, getGenerativeModel, GoogleAIBackend } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-ai.js";
 
-const MODEL_NAME = "gemini-3.8-flash";
-let modelPromise = null;
+const PRIMARY_MODEL = "gemini-3.8-flash";
+const FALLBACK_MODEL = "gemini-3.5-flash-lite";
+const REQUEST_TIMEOUT_MS = 45000;
+const modelCache = new Map();
 
-function getModel() {
+function getModel(modelName = PRIMARY_MODEL) {
   if (!window.FST_FIREBASE_APP) {
     throw new Error("Firebase ainda não terminou de inicializar. Atualize a página e tente novamente.");
   }
-  if (!modelPromise) {
+  if (!modelCache.has(modelName)) {
     const ai = getAI(window.FST_FIREBASE_APP, { backend: new GoogleAIBackend() });
     const model = getGenerativeModel(ai, {
-      model: MODEL_NAME,
+      model: modelName,
       generationConfig: {
         responseMimeType: "application/json",
         temperature: 0.1,
         maxOutputTokens: 1800
       }
     });
-    modelPromise = Promise.resolve(model);
+    modelCache.set(modelName, Promise.resolve(model));
   }
-  return modelPromise;
+  return modelCache.get(modelName);
+}
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function errorText(error) {
+  return String(error?.message || error || "");
+}
+
+function isTemporaryModelError(error) {
+  const msg = errorText(error);
+  return /\b(429|500|502|503|504)\b|high demand|overloaded|temporarily unavailable|resource_exhausted|unavailable/i.test(msg);
+}
+
+async function generateWithResilience(prompt, parts) {
+  const runWithTimeout = async (modelName) => {
+    const model = await getModel(modelName);
+    let timer;
+    try {
+      return await Promise.race([
+        model.generateContent([prompt, ...parts]),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error("A análise excedeu 45 segundos. Tente novamente com uma captura por vez.")), REQUEST_TIMEOUT_MS);
+        })
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  };
+
+  // Duas tentativas no modelo principal, com espera progressiva para picos de demanda.
+  let lastError;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      setStatus(attempt === 0
+        ? "Enviando as capturas ao Gemini…"
+        : "O Gemini está ocupado. Tentando novamente…");
+      return await runWithTimeout(PRIMARY_MODEL);
+    } catch (error) {
+      lastError = error;
+      if (!isTemporaryModelError(error)) throw error;
+      if (attempt === 0) await wait(2500);
+    }
+  }
+
+  // Modelo alternativo de menor latência/custo, ainda compatível com imagens e JSON.
+  try {
+    setStatus("Modelo principal ocupado. Tentando o Gemini Flash-Lite…");
+    return await runWithTimeout(FALLBACK_MODEL);
+  } catch (fallbackError) {
+    if (isTemporaryModelError(fallbackError)) {
+      throw new Error("Os modelos Gemini estão temporariamente sobrecarregados. Aguarde 1–2 minutos e tente novamente. Detalhe: " + errorText(fallbackError).slice(0, 180));
+    }
+    throw fallbackError || lastError;
+  }
 }
 
 function fileToPart(file) {
@@ -78,7 +136,17 @@ function setRosterRows(kind, entries) {
   });
 }
 function normalizeResult(raw) {
-  const obj = typeof raw === "string" ? JSON.parse(raw) : raw;
+  let obj = raw;
+  if (typeof raw === "string") {
+    const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
+    const first = cleaned.indexOf("{");
+    const last = cleaned.lastIndexOf("}");
+    if (first < 0 || last <= first) throw new Error("O Gemini respondeu sem um JSON válido. Tente novamente.");
+    obj = JSON.parse(cleaned.slice(first, last + 1));
+  }
+  if (!obj || typeof obj !== "object" || Array.isArray(obj)) {
+    throw new Error("A resposta do Gemini veio em formato inesperado. Tente novamente.");
+  }
   return {
     opponent: typeof obj.opponent === "string" ? obj.opponent.trim() : "",
     our_goals: cleanNumber(obj.our_goals),
@@ -124,6 +192,8 @@ document.addEventListener("click", async event => {
     setStatus("Cada imagem deve ter no máximo 10 MB.", true);
     return;
   }
+  if (button.dataset.fstBusy === "1") return;
+  button.dataset.fstBusy = "1";
   button.disabled = true;
   button.textContent = "ANALISANDO…";
   setStatus("Gemini está lendo as capturas. Isso pode levar alguns segundos.");
@@ -151,9 +221,11 @@ Retorne APENAS JSON válido, sem markdown, neste formato:
  "unreadable": ["lista de campos que não puderam ser lidos"]
 }
 Se houver telas de resumo e estatísticas, use o resumo para placar e as telas detalhadas para estatísticas. Se os prints se contradisserem, não escolha por conta própria: use null no campo conflitante e explique em unreadable. Nomes de jogadores só devem ser incluídos se estiverem legíveis. Não deduza o nome do adversário pelo nome do clube do usuário.`;
-    const model = await getModel();
-    const result = await model.generateContent([prompt, ...parts]);
-    const responseText = result.response.text();
+    const result = await generateWithResilience(prompt, parts);
+    const responseText = result?.response?.text?.();
+    if (!responseText || !responseText.trim()) {
+      throw new Error("O Gemini retornou uma resposta vazia. Tente novamente.");
+    }
     const parsed = normalizeResult(responseText);
     let filled = [];
     if (fillIfReadable(form, "opponent", parsed.opponent)) filled.push("adversário");
@@ -173,12 +245,15 @@ Se houver telas de resumo e estatísticas, use o resumo para placar e as telas d
     const msg = String(error?.message || error);
     if (/app.?check|403|permission|unauthenticated/i.test(msg)) {
       setStatus("O Firebase recusou a chamada. Confira a configuração de App Check e se a API Gemini Developer está ativa. Detalhe: " + msg.slice(0,180), true);
+    } else if (/sobrecarregados|high demand|temporarily unavailable|\b(500|502|503|504)\b/i.test(msg)) {
+      setStatus(msg.slice(0, 300), true);
     } else if (/quota|429|resource_exhausted/i.test(msg)) {
-      setStatus("A cota gratuita do Gemini foi atingida ou está temporariamente indisponível. Tente novamente mais tarde.", true);
+      setStatus("A cota gratuita do Gemini foi atingida. Aguarde a renovação da cota ou tente mais tarde. Detalhe: " + msg.slice(0, 160), true);
     } else {
       setStatus("Não foi possível analisar as imagens: " + msg.slice(0,220), true);
     }
   } finally {
+    button.dataset.fstBusy = "0";
     button.disabled = false;
     button.textContent = "✦ ANALISAR CAPTURAS E PREENCHER";
   }
