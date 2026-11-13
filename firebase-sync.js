@@ -37,6 +37,7 @@ let app, auth, db, sharedDoc;
 try {
   if (!window.FIREBASE_CONFIG) throw new Error("firebase-config.js não carregou.");
   app = initializeApp(window.FIREBASE_CONFIG);
+  window.FST_FIREBASE_APP = app;
   auth = getAuth(app);
   db = getFirestore(app);
   sharedDoc = doc(db, "shared", "fst-manager");
@@ -71,6 +72,7 @@ if (auth && db && sharedDoc) {
   onAuthStateChanged(auth, async user => {
     if (stopListening) { stopListening(); stopListening = null; }
     currentUser = user;
+    window.FST_CURRENT_USER = user || null;
     if (!user) {
       if (emailEl) emailEl.textContent = "";
       cloud("☁ DESCONECTADO", true);
