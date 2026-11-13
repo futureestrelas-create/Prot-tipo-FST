@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app-check.js";
 
 const gate = document.getElementById("authGate");
 const appRoot = document.getElementById("mainApp");
@@ -38,6 +39,21 @@ try {
   if (!window.FIREBASE_CONFIG) throw new Error("firebase-config.js não carregou.");
   app = initializeApp(window.FIREBASE_CONFIG);
   window.FST_FIREBASE_APP = app;
+
+  // App Check para o Firebase AI Logic (Gemini Vision).
+  // Chave pública do reCAPTCHA Enterprise cadastrada no Firebase App Check.
+  const FST_RECAPTCHA_ENTERPRISE_SITE_KEY = "6LcD8x4uAAAAAGP5biSxD_W40PdAS84Y203v1qbA";
+  try {
+    window.FST_APP_CHECK = initializeAppCheck(app, {
+      provider: new ReCaptchaEnterpriseProvider(FST_RECAPTCHA_ENTERPRISE_SITE_KEY),
+      isTokenAutoRefreshEnabled: true
+    });
+    window.FST_APP_CHECK_READY = true;
+  } catch (appCheckError) {
+    window.FST_APP_CHECK_READY = false;
+    console.error("FST App Check initialization failed:", appCheckError);
+  }
+
   auth = getAuth(app);
   db = getFirestore(app);
   sharedDoc = doc(db, "shared", "fst-manager");
