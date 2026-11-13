@@ -947,6 +947,16 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
 .fst-analysis-empty{font-size:12px;color:var(--muted);padding:14px;border:1px dashed #34363e;border-radius:9px}
 @media(max-width:760px){.fst-analysis-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.fst-analysis-bar-row{grid-template-columns:90px 1fr 30px;gap:7px}.fst-analysis-result{align-items:flex-start}}
 
+
+/* V30 — análises ofensiva e defensiva integradas à aba Estatísticas */
+.fst-stats-advanced-heading{margin:28px 0 16px;padding:17px 18px 13px;border-top:1px solid #34363e;border-bottom:1px solid #292b32;background:linear-gradient(90deg,rgba(220,15,43,.09),transparent)}
+.fst-stats-advanced-heading .eyebrow{color:#f04459;font-weight:900;letter-spacing:.13em;font-size:11px}
+.fst-stats-advanced-heading p{margin:6px 0 0;color:var(--muted);font-size:12px}
+.fst-stats-subsection{margin:0 0 26px;padding-top:8px}
+.fst-stats-subsection+.fst-stats-subsection{border-top:1px solid #30323a;padding-top:24px}
+.fst-stats-module-title{font-size:21px!important;margin:4px 0 7px!important}
+.fst-stats-subsection .fst-analysis-heading{margin-bottom:14px}
+
 </style>
 
 </head>
@@ -1040,9 +1050,7 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
     <button data-page="squad" title="Elenco / Cards"><span class="ico">🃏</span><span class="nav-text">Elenco / Cards</span></button>
     <button data-page="competitions" title="Competições"><span class="ico">🏆</span><span class="nav-text">Competições</span></button>
     <button data-page="stats" title="Estatísticas"><span class="ico">📊</span><span class="nav-text">Estatísticas</span></button>
-    <button data-page="attack" title="Análise de Ataque"><span class="ico">⚡</span><span class="nav-text">Análise de Ataque</span></button>
-    <button data-page="defense" title="Análise de Defesa"><span class="ico">🛡️</span><span class="nav-text">Análise de Defesa</span></button>
-    <button data-page="badges" title="Conquistas"><span class="ico">🏅</span><span class="nav-text">Conquistas</span></button>
+<button data-page="badges" title="Conquistas"><span class="ico">🏅</span><span class="nav-text">Conquistas</span></button>
   </nav>
   <div class="sidebar-bottom">
   <button class="sidebar-bottom-btn" data-page="settings" title="Configurações"><span class="ico">⚙</span><span class="nav-text">Settings</span></button>
@@ -1229,10 +1237,13 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
   </div>
   <div class="panel section individual-stats-panel"><div class="section-head"><div><h2>Estatísticas individuais</h2><p>Ranking do elenco no estilo de banco de dados de carreira. Atualiza automaticamente ao registrar, editar ou excluir partidas.</p></div><button class="btn" id="exportStatsCsv">↓ EXPORTAR CSV</button></div><div class="individual-stats-legend"><span>OVR</span><span>POS.</span><span>JOGADOR</span><span>GOLS</span><span>ASSIST.</span><span>G+A</span><span>MVP</span><span>JOGOS*</span></div><div id="advPlayerTable" class="individual-player-list"></div><small class="individual-stats-note">* Jogos contabilizados quando há gol, assistência ou MVP registrado; jogos sem participação direta não são presumidos.</small></div>
   <div class="panel section"><div class="section-head"><div><h2>Histórico de resultados</h2><p>Partidas consideradas nos filtros acima</p></div></div><div class="table-wrap"><table><thead><tr><th>Data</th><th>Competição</th><th>Adversário</th><th>Resultado</th><th>Status</th></tr></thead><tbody id="statsTable"></tbody></table></div></div>
-</section>
 
-<section id="page-attack" class="page hidden">
-  <div class="fst-analysis-heading"><div><span class="eyebrow">FUTURE STARS FC / DESEMPENHO</span><h1 class="page-title">⚡ Análise de Ataque</h1><p class="page-subtitle">Indicadores calculados a partir dos resultados e dos gols registrados nas partidas.</p></div><button class="btn" data-page="matches">＋ Registrar partida</button></div>
+  <div class="fst-stats-advanced-heading">
+    <span class="eyebrow">ANÁLISES AVANÇADAS</span>
+    <p>Indicadores ofensivos e defensivos calculados com o histórico de partidas do clube.</p>
+  </div>
+<div id="fst-stats-attack" class="fst-stats-subsection">
+  <div class="fst-analysis-heading"><div><span class="eyebrow">ESTATÍSTICAS / ANÁLISE DE ATAQUE</span><h1 class="fst-stats-module-title">⚡ Análise de Ataque</h1><p class="page-subtitle">Indicadores calculados a partir dos resultados e dos gols registrados nas partidas.</p></div></div>
   <div class="stats fst-analysis-kpis">
     <div class="stat"><div class="stat-top">GOLS MARCADOS</div><strong id="fstAtkGoals">0</strong><small>Total no histórico</small></div>
     <div class="stat"><div class="stat-top">MÉDIA DE GOLS</div><strong id="fstAtkAvg">0,00</strong><small>Por partida</small></div>
@@ -1242,9 +1253,9 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
   <div class="panel fst-analysis-panel"><div class="section-head"><div><h2>Artilharia do elenco</h2><p>Ranking baseado nos autores de gols informados no registro das partidas.</p></div></div><div id="fstAtkScorers" class="fst-analysis-bars"></div></div>
   <div class="panel fst-analysis-panel"><div class="section-head"><div><h2>Produção ofensiva recente</h2><p>Últimas 8 partidas registradas.</p></div></div><div id="fstAtkRecent" class="fst-analysis-results"></div></div>
   <p class="fst-analysis-footnote">Não são estimados chutes, xG, posse ou conversão: esses indicadores só poderão aparecer quando forem registrados dados específicos para eles.</p>
-</section>
-<section id="page-defense" class="page hidden">
-  <div class="fst-analysis-heading"><div><span class="eyebrow">FUTURE STARS FC / DESEMPENHO</span><h1 class="page-title">🛡️ Análise de Defesa</h1><p class="page-subtitle">Indicadores defensivos calculados com os placares registrados no histórico.</p></div><button class="btn" data-page="matches">＋ Registrar partida</button></div>
+</div>
+<div id="fst-stats-defense" class="fst-stats-subsection">
+  <div class="fst-analysis-heading"><div><span class="eyebrow">ESTATÍSTICAS / ANÁLISE DE DEFESA</span><h1 class="fst-stats-module-title">🛡️ Análise de Defesa</h1><p class="page-subtitle">Indicadores defensivos calculados com os placares registrados no histórico.</p></div></div>
   <div class="stats fst-analysis-kpis">
     <div class="stat"><div class="stat-top">GOLS SOFRIDOS</div><strong id="fstDefGoals">0</strong><small>Total no histórico</small></div>
     <div class="stat"><div class="stat-top">MÉDIA SOFRIDA</div><strong id="fstDefAvg">0,00</strong><small>Por partida</small></div>
@@ -1254,7 +1265,9 @@ label[for="dashTwitchChannel"], label[for="dashKickChannel"],
   <div class="panel fst-analysis-panel"><div class="section-head"><div><h2>Consistência defensiva</h2><p>Distribuição de gols sofridos por partida.</p></div></div><div id="fstDefDistribution" class="fst-analysis-bars"></div></div>
   <div class="panel fst-analysis-panel"><div class="section-head"><div><h2>Últimos resultados defensivos</h2><p>Adversário, placar e gols sofridos nas últimas 8 partidas.</p></div></div><div id="fstDefRecent" class="fst-analysis-results"></div></div>
   <p class="fst-analysis-footnote">Desarmes, interceptações, bloqueios e defesa por tempo não existem nos registros atuais. Não serão inventados; podem ser adicionados numa etapa própria de coleta.</p>
+</div>
 </section>
+
 <section id="page-badges" class="page hidden">
   <div class="results-heading"><div><span class="eyebrow">HALL DA FAMA</span><h1 class="page-title">Conquistas do clube</h1><p class="page-subtitle">Badges desbloqueadas automaticamente com base nas partidas e estatísticas registradas no FUTURE STARS FC.</p></div><div class="badge-total-card"><strong id="badgeUnlockedTotal">0</strong><span>badges conquistadas</span><small id="badgeProgressTotal">0% concluído</small></div></div>
   <div class="badge-filter-row"><button class="btn active" data-badge-filter="all">Todas</button><button class="btn" data-badge-filter="unlocked">Conquistadas</button><button class="btn" data-badge-filter="locked">Bloqueadas</button></div>
